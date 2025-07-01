@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Learnix Documentation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4F46E5;
+      --dark: #1E293B;
+      --light: #F8FAFC;
+      --gray: #94A3B8;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--light);
+      color: var(--dark);
+    }
+
+    .docs-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 2rem;
+    }
+
+    .docs-sidebar {
+      border-right: 1px solid #E2E8F0;
+      padding-right: 1rem;
+    }
+
+    .docs-sidebar h3 {
+      color: var(--primary);
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .docs-sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .docs-sidebar li {
+      margin-bottom: 0.6rem;
+    }
+
+    .docs-sidebar a {
+      color: var(--dark);
+      text-decoration: none;
+      padding: 0.5rem;
+      display: block;
+      border-radius: 4px;
+    }
+
+    .docs-sidebar a:hover {
+      background: #EDE9FE;
+      color: var(--primary);
+    }
+
+    .docs-content h1 {
+      color: var(--primary);
+      font-size: 2rem;
+    }
+
+    .docs-content h2 {
+      margin-top: 2rem;
+      border-bottom: 1px solid #E2E8F0;
+      padding-bottom: 0.5rem;
+    }
+
+    .docs-content p, li {
+      line-height: 1.6;
+    }
+
+    code {
+      
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: 'Fira Code', monospace;
+    }
+
+    pre {
+      background: #1E293B;
+      color: #f1f1f1;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+
+    .alert {
+      background: #DBEAFE;
+      padding: 1rem;
+      border-left: 4px solid var(--primary);
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="docs-container">
+    <!-- Sidebar -->
+    <aside class="docs-sidebar">
+      <h3>Learnix Docs</h3>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#features">Core Features</a></li>
+        <li><a href="#tech-stack">Tech Stack</a></li>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#database">Database Structure</a></li>
+        <li><a href="#file-structure">File Structure</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="#future">Future Scope</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="docs-content">
+      <h1>📘 Learnix Documentation</h1>
+      <p>Welcome to the official Learnix documentation page. This guide explains how Learnix works, how to install it, and how to contribute or modify it.</p>
+
+      <section id="overview">
+        <h2>1. Project Overview</h2>
+        <p>Learnix is a web-based coding and learning platform built using PHP and MySQL. It allows users to solve categorized questions, view hints/solutions, and track their progress. Admins can manage questions, users, and system content.</p>
+      </section>
+
+      <section id="features">
+        <h2>2. Core Features</h2>
+        <ul>
+          <li>User registration & authentication</li>
+          <li>Admin dashboard to manage questions</li>
+          <li>Question bank with difficulty and topic filters</li>
+          <li>Hints and solutions for guided learning</li>
+          <li>User profile with picture and info</li>
+        </ul>
+      </section>
+
+      <section id="tech-stack">
+        <h2>3. Tech Stack</h2>
+        <ul>
+          <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
+          <li><strong>Backend:</strong> PHP</li>
+          <li><strong>Database:</strong> MySQL</li>
+        </ul>
+      </section>
+
+      <section id="installation">
+        <h2>4. Installation</h2>
+        <ol>
+          <li>Clone the repository or extract files into your server root (e.g., <code>htdocs</code> in XAMPP).</li>
+          <li>Import the <code>learnix.sql</code> database using phpMyAdmin.</li>
+          <li>Update <code>db.php</code> with your database credentials.</li>
+          <li>Run the project via <code>http://localhost/learnix</code></li>
+        </ol>
+        <div class="alert">
+          <strong>Tip:</strong> Ensure MySQL and Apache are running in your XAMPP/WAMP before launching the app.
+        </div>
+      </section>
+
+      <section id="database">
+        <h2>5. Database Structure</h2>
+        <ul>
+          <li><code>users</code> – Stores user credentials and profile</li>
+          <li><code>questions</code> – Contains question data with foreign keys</li>
+          <li><code>topics</code> – Defines categories like Arrays, Strings, etc.</li>
+          <li><code>difficulty</code> – Difficulty levels (Easy, Medium, Hard)</li>
+        </ul>
+      </section>
+
+      <section id="file-structure">
+        <h2>6. File Structure</h2>
+        <pre><code>/learnix/
+├── auth/              # Login/Register logic
+├── db/                # Database connection
+├── includes/          # Header/Footer files
+├── pages/             # Dashboard, Profile, etc.
+├── assets/            # CSS, JS, images
+├── index.php
+├── documentation.php
+        </code></pre>
+      </section>
+
+      <section id="security">
+        <h2>7. Security</h2>
+        <ul>
+          <li>Passwords stored using <code>password_hash()</code></li>
+          <li>Prepared statements for SQL queries</li>
+          <li>Session-based authentication</li>
+          <li>Form input validations</li>
+        </ul>
+      </section>
+
+      <section id="future">
+        <h2>8. Future Scope</h2>
+        <ul>
+          <li>Code editor integration</li>
+          <li>Live problem-solving interface</li>
+          <li>Leaderboard and badges</li>
+          <li>Optional mentor/instructor module</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
