@@ -1,4 +1,7 @@
 <?php
+
+  require_once '../sql/init.php';
+  
   $host = 'localhost';
   $dbname = 'learnix';
   $user = 'root';
