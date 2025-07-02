@@ -17,20 +17,26 @@
       </div>
 
       <form action="" method="post">
+
+          <div class="input-group">
+              <label for="username">Username</label>
+              <input type="text" name="username" id="username" placeholder="Enter your username" required>
+          </div>
+
           <div class="input-group">
               <label for="email">Email</label>
-              <input type="email" id="email" placeholder="Enter your Email" required>
+              <input type="email" name="email" id="email" placeholder="Enter your Email" required>
           </div>
 
           <div class="input-group">
               <label for="password">Password</label>
-              <input type="password" id="password" placeholder="Enter your password" required>
+              <input type="password" id="password" name="pass" placeholder="Enter your password" required>
               <i class="bi bi-shield-lock shield-icon" onclick="togglePassword()"></i>
           </div>
 
           <div class="input-group">
               <label for="password">Confirm Password</label>
-              <input type="password" id="password" placeholder="Confirm password" required>
+              <input type="password" id="password" name="confirmpass" placeholder="Confirm password" required>
               <i class="bi bi-shield-lock shield-icon" onclick="togglePassword()"></i>
           </div>
 
