@@ -1,5 +1,5 @@
 <?php
-    include '../login/login.php';
+    include '../auth/validate_login.php';
 ?>
 
 <!DOCTYPE html>
