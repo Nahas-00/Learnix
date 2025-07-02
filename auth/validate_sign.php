@@ -12,12 +12,21 @@
 
 
         if($email== '' || $password == '' || $confirmpass == ''){
-            $msg= "Invalid! Enter all fields";
+            $msg= " Enter all fields";
+            $title= 'Warning';
             
         }else if($password != $confirmpass){
             $msg = "Password doesnt match";
+            $title= 'Error';
         }else if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
             $msg = "Invalid Email !";
+            $title= 'Error';
+        }else if(strlen($password)< 5){
+            $msg= "Password must be at least 5 characters";
+            $title= 'Warning';
+        }else if(!preg_match('/[0-9]/' , $password)){
+            $msg= "Password must contain atleast 1 number";
+            $title= 'Warning';
         }else{
             $stmt = $pdo->prepare("select *from users where email= :email LIMIT 1");
             $stmt->execute(['email'=>$email]);
@@ -25,15 +34,18 @@
 
             if($user){
                 $msg = "Email already exists !";
+                $title= 'Warning';
             }else{
                 $hash_pass = password_hash($password,PASSWORD_DEFAULT);
                 $stmt=$pdo->prepare("insert into users (email,password,username) values(?,?,?)");
                 $insertion = $stmt->execute([$email,$hash_pass,$username]);
 
                 if($insertion){
-                    $msg = "Successfull! Log in to Continue";
+                    $msg = " Redirecting..! Log in to Continue";
+                    $title= 'Success';
                 }else{
                     $msg = "Sign up Failed!";
+                    $title= 'Error';
                 }
             }
         }
