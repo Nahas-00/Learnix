@@ -11,6 +11,7 @@
 
     if(!$email || !$pass){
       $msg = "Enter both email and password";
+      $title= 'Warning';
     }
 
     $stmt=$pdo->prepare("select * from users where email= :email LIMIT 1");
@@ -22,14 +23,16 @@
       $_SESSION['userid'] = $user['id'];
       $_SESSION['username'] = $user['username'];
       $msg = "Login Successfull";
+      $title= 'Success';
 
       if($email == "admin@learnix.com"){
         $role = 'admin';
       }
-      exit;
+      
 
     }else{
-      $msg = "Error! Invalid Email or Password";
+      $msg = "Invalid Email or Password";
+      $title= 'Error';
     }
 
 
