@@ -20,6 +20,12 @@
     <div class="notification">
 
     </div>
+
+    <div id="redirect-overlay">
+        <div class="spinner"></div>
+        <p>Redirecting...</p>
+    </div>
+
   
   <div class="login-container">
       <div class="logo">
@@ -30,13 +36,13 @@
       <form action="" method="post">
           <div class="input-group">
               <label for="email">Email</label>
-              <input type="email" name="email" id="email" placeholder="Enter your Email" required>
+              <input type="email" name="email" id="email" placeholder="Enter your Email" >
           </div>
 
           <div class="input-group">
               <label for="password">Password</label>
-              <input type="password" id="password" name="pass" placeholder="Enter your password" required>
-              <i class="bi bi-shield-lock shield-icon" onclick="togglePassword()"></i>
+              <input type="password" id="password" name="pass" placeholder="Enter your password" >
+              <i class="bi bi-shield-lock shield-icon" onclick="togglePassword('password' , this)"></i>
           </div>
 
           <button type="submit" name="submit" class="login-btn">Log In</button>
