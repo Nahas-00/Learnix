@@ -8,11 +8,25 @@ document.addEventListener("DOMContentLoaded",()=>{
 
    if(title.toLowerCase()== 'success'){
       if(role == 'user'){
-        window.location.href = '../user/dashboard.php';
+         setTimeout(() => {
+              document.getElementById("redirect-overlay").style.display = "flex";
+
+              setTimeout(() => {
+                window.location.href = '../user/dashboard.php';
+              }, 1500);
+            }, 1000); 
+
       }else if(role == 'admin'){
-        window.location.href = '../admin/dashboard.php';
+           setTimeout(() => {
+              document.getElementById("redirect-overlay").style.display = "flex";
+
+              setTimeout(() => {
+                window.location.href = '../admin/dashboard.php';
+              }, 1500);
+            }, 1000);
       }
 
     }
   }
 });
+

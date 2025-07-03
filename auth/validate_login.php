@@ -9,10 +9,10 @@
     $pass = $_POST['pass'] ?? '';
     $role = 'user';
 
-    if(!$email || !$pass){
+    if($email == '' || !$pass){
       $msg = "Enter both email and password";
       $title= 'Warning';
-    }
+    }else{
 
     $stmt=$pdo->prepare("select * from users where email= :email LIMIT 1");
     $stmt->execute(['email'=>$email]);
@@ -34,6 +34,7 @@
       $msg = "Invalid Email or Password";
       $title= 'Error';
     }
+  }
 
 
   }
