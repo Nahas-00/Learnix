@@ -419,5 +419,37 @@ footer{
   font-size: 0.875rem;
 }
 
+@media (max-width:700px){
+
+  nav{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+.nav-links {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    box-sizing: border-box;
+  }
+
+  .hero-content{
+    margin-top: 10rem;
+  }
+}
+
 
 
