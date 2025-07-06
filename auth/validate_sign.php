@@ -11,7 +11,7 @@
 
 
 
-        if($email== '' || $password == '' || $confirmpass == ''){
+        if($email== '' || $password == '' || $confirmpass == '' || $username == ''){
             $msg= " Enter all fields";
             $title= 'Warning';
             
@@ -36,6 +36,11 @@
                 $msg = "Email already exists !";
                 $title= 'Warning';
             }else{
+
+                if($username){
+                    $msg="Username already taken.";
+                    $title= 'warning';
+                }else{
                 $hash_pass = password_hash($password,PASSWORD_DEFAULT);
                 $stmt=$pdo->prepare("insert into users (email,password,username) values(?,?,?)");
                 $insertion = $stmt->execute([$email,$hash_pass,$username]);
@@ -48,6 +53,8 @@
                     $title= 'Error';
                 }
             }
+
+        }
         }
     }
 ?>
