@@ -1,5 +1,9 @@
 
+<?php
+require_once '../auth/auth_validate.php';
 
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
