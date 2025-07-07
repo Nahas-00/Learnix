@@ -27,19 +27,19 @@ require_once '../auth/auth_validate.php';
 
       <div class="nav-bar">
       
-          <a href="" class="nav-item active">
+          <a href="?page=home" class="nav-item active">
             <i class="fa-solid fa-gauge-high nav-icon"></i>
             Dashboard
           </a>
-          <a href="" class="nav-item">
+          <a href="?page=user_manage" class="nav-item">
             <i class="fa-solid fa-users nav-icon"></i>
             Users
           </a>
-          <a href="" class="nav-item">
+          <a href="?page=question_manage" class="nav-item">
             <i class="fa-solid fa-laptop-code nav-icon"></i>
             Questions
           </a>
-          <a href="" class="nav-item">
+          <a href="?page=view_submission" class="nav-item">
             <i class="fa-solid fa-code nav-icon"></i>
             Submissions
           </a>
@@ -49,140 +49,29 @@ require_once '../auth/auth_validate.php';
 
   <div class="right">
 
-    <div class="welcome-message">
-     <div class="welcome-header">
-       <h1>Welcome , Admin</h1>
-      <p class="welcome-text">Here's what's happening with your platform</p>
-     </div>
+  
+  <?php
+      if(isset($_GET['page'])){
+        $page = $_GET['page'];
 
-         <div class="logout-btn">
-         <a href="../auth/logout.php"><button type="submit" >Logout</button></a>
-      </div>
+        $allowed = ['home', 'question_manage','user_manage','view_submission'];
 
-      <div class="profile-icon">
-        <img src="../uploads/no_profile.png" alt="">
-        <span class="profile-span">View profile</span>
-      </div>
-    </div>
+        if(in_array($page,$allowed)&&file_exists($page.".php")){
 
-    <div class="dashboard-grid">
-        <div class="card">
-            <div class="card-title">
-                <h3 class="card-heading">Total Users</h3>
-                <div class="card-icon">
-                    <i class="fa-solid fa-users nav-icon"></i>
-                </div>
-            </div>
-              <div class="card-value">270</div>
-        </div>
-
-         <div class="card">
-            <div class="card-title">
-                <h3 class="card-heading">Total Questions</h3>
-                <div class="card-icon">
-                    <i class="fa-solid fa-laptop-code nav-icon"></i>
-                </div>
-            </div>
-              <div class="card-value">170</div>
-        </div>
-
-         <div class="card">
-            <div class="card-title">
-                <h3 class="card-heading">Total Submissions</h3>
-                <div class="card-icon">
-                    <i class="fa-solid fa-code nav-icon"></i>
-                </div>
-            </div>
-              <div class="card-value">100</div>
-        </div>
-
-    </div>
-
-    <!--Submissions table Section-->
-
-
-    <div class="table-section">
-        <div class="table-header">
-          <h1 class="table-title">Recent Submissions</h1>
-          <a href="#" class="view-link">View All</a>
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>User</th>
-                    <th>Problem</th>
-                    <th>Language</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-            <td>
-              <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <div class="user-avatar"><img src="../uploads/20250102_231850.jpg" alt=""></div>
-                <span>John Doe</span>
-              </div>
-            </td>
-            <td>Two Sum</td>
-            <td>Python</td>
-            <td><span class="status status-success">Accepted</span></td>
-            <td>2023-11-15</td>
-          </tr>
-          <tr>
-            <td>
-              <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <div class="user-avatar"><img src="../uploads/no_profile.png" alt=""></div>
-                <span>Alice Smith</span>
-              </div>
-            </td>
-            <td>Reverse String</td>
-            <td>JavaScript</td>
-            <td><span class="status status-failed">Failed</span></td>
-            <td>2023-11-14</td>
-          </tr>
-            </tbody>
-        </table>
-    </div>
-
-
-<!--Questions table Section-->
-
-    <div class="table-section">
-        <div class="table-header">
-          <h1 class="table-title">Recent Submissions</h1>
-          <a href="#" class="view-link">View All</a>
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Question</th>
-                    <th>Difficulty</th>
-                    <th>Attempts</th>
-                </tr>
-            </thead>
-
-            <tbody>
-               <tr>
-            <td>Two Sum</td>
-            <td><span class="problem-tag">Easy</span></td>
-            <td>1,248</td>
-            
-          </tr>
-          <tr>
-            <td>Reverse String</td>
-            <td><span class="problem-tag">Hard</span></td>
-            <td>987</td>
-          </tr>
-            </tbody>
-        </table>
-    </div>
-
-
-      <div class="not-used"></div>
+        include $page.".php";
+        }else{
+          echo "<div class=not-found>Error 404 ! <br> Page not found</div>";
+        }
+      }else{
+        include "home.php";
+      }
+    ?>
+   
   </div>
+
+
+  <script type="module" src="../scripts/dashboard.js"></script>
 </body>
 </html>
+
+
