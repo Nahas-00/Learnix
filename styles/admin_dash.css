@@ -157,7 +157,7 @@ body{
 .dashboard-grid{
   max-width: 1200px;
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(265px,1fr));
+  grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
   gap: 1.5rem;
   margin: 0 auto 2rem;
 }
