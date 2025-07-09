@@ -70,7 +70,7 @@ require_once '../auth/auth_validate.php';
   </div>
 
 
-  <script type="module" src="../scripts/dashboard.js"></script>
+  <script src="../scripts/dashboard.js"></script>
 </body>
 </html>
 
