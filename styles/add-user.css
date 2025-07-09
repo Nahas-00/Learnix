@@ -121,3 +121,65 @@ form input:focus{
   outline: none;
   border:3px solid var(--primary-dark);
 }
+
+
+.edit-btn , .delete-btn{
+  font-size: 1rem;
+  margin-right: .4rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.edit-btn{
+  background: var(--accent);
+}
+
+.delete-btn{
+  background: var(--danger);
+}
+
+.edit-btn:hover{
+  background-color: #e18f14;
+  border: 1px solid black;
+}
+
+.delete-btn:hover{
+   background-color:#d7225b;
+  border: 1px solid black;
+}
+
+.search-bar{
+  display: flex;
+  flex-direction: row;
+
+}
+
+.search-bar input{
+  padding: .7rem 2.3rem;
+  height: 0.3rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.search-bar button{
+  position: absolute;
+  right: 20.3rem;
+  top: 14.687rem;
+  border-radius: 5px;
+  padding: 0.298rem 0.6rem;
+  cursor: pointer;
+   background-color: var(--primary);
+  color: var(--light-2);
+  outline: none;
+  border: 1px solid var(--primary-light);
+  transition: var(--transition);
+  box-shadow: 0 0 10px rgba(23, 23, 23, 0.15);
+}
+
+.search-bar button:hover{
+  background-color: var(--primary-light);
+  transform: scaleX(1.07);
+  border-color: var(--light-1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}

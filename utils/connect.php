@@ -1,6 +1,7 @@
 <?php
 
-  require_once '../sql/init.php';
+require_once __DIR__ . '/../sql/init.php';
+
   
   $host = 'localhost';
   $dbname = 'learnix';

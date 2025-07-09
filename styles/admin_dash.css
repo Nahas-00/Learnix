@@ -409,3 +409,23 @@ td{
     font-family: 'Poppins', sans-serif;
     text-align: center;
   }
+
+  .add-btn{
+  height: 2.2rem;
+  width: 5.5rem;
+  text-align: center;
+  background-color: var(--primary-dark);
+  color: var(--light-2);
+  box-shadow: var(--box-shadow);
+  border-radius: 0.6rem;
+  cursor: pointer;
+  border: 1px solid black;
+  transition: var(--transition);
+}
+
+.add-btn:hover{
+  border: 1px solid white;
+  box-shadow: rgba(158, 90, 231,0.3);
+  background-color: var(--primary-light);
+  transform: translateY(-2px);
+}
