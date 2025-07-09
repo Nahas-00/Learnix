@@ -20,10 +20,10 @@ if (isset($_SESSION['show_add_user'])) {
 $search = $_GET['q'] ?? '';
 
 if (!empty($search)  && trim($_GET['q']) !== '') {
-  $stmt = $pdo->prepare("SELECT id, username, email FROM users WHERE username LIKE :search OR email LIKE :search");
+  $stmt = $pdo->prepare("SELECT id, username, email , profile_pic FROM users WHERE username LIKE :search OR email LIKE :search");
   $stmt->execute(['search' => "%$search%"]);
 } else {
-  $stmt = $pdo->query("SELECT id, username, email FROM users");
+  $stmt = $pdo->query("SELECT id, username, email , profile_pic FROM users");
 }
 $user=$stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -122,9 +122,9 @@ $user=$stmt->fetchAll(PDO::FETCH_ASSOC);
            <td><?= htmlspecialchars($user['id']) ?> </td>
             <td>
               <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <div class="user-avatar"><img src="<?=
-                 !empty($user['profilke_pic']) && file_exists('../'.$user['profile_pic'])
-                  ?'../'.$user['profile_pic'] : '../uploads/no_profile-user.png'?>
+                <div class="user-avatar"><img src="<?= 
+                !empty($user['profile_pic'])&&file_exists('../uploads/'.$user['profile_pic'])? '../uploads/'.$user['profile_pic'] 
+                : '../uploads/no_profile-user.png' ?>
                 " alt="user_profile_photo"></div>
                 <span><?= htmlspecialchars($user['username']) ?></span>
               </div>
@@ -133,9 +133,9 @@ $user=$stmt->fetchAll(PDO::FETCH_ASSOC);
             <td><?= htmlspecialchars($user['email']) ?></td>
             
             <td>
-                    <button class="edit-btn" type="button" data-id="<?= $user['id'] ?>">
-            <i class="fa-solid fa-pen-to-square"></i>
-          </button>
+              <a href="functions/edit-user.php?id=<?= $user['id'] ?>"><button class="edit-btn" type="button" data-id="<?= $user['id'] ?>">
+              <i class="fa-solid fa-pen-to-square"></i>
+              </button></a>
 
           <form method="post" action="functions/delete-user.php" style="display:inline;">
             <input type="hidden" name="user_id" value="<?= $user['id'] ?>">
