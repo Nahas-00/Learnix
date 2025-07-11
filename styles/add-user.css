@@ -148,34 +148,40 @@ form input:focus{
   border: 1px solid black;
 }
 
-.search-bar{
+.search-bar {
   display: flex;
-  flex-direction: row;
-
+  justify-content: flex-end;
+  margin: 1rem 0;
 }
 
-.search-bar input{
-  padding: .7rem 2.3rem;
-  height: 0.3rem;
-  border-radius: 5px;
+.search-bar form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.4rem 1rem;
   font-size: 1rem;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  border: 1px solid var(--light-2);
+  border-radius: 6px 0 0 6px;
   outline: none;
 }
 
-.search-bar button{
-  position: absolute;
-  right: 20.3rem;
-  top: 14.687rem;
-  border-radius: 5px;
-  padding: 0.298rem 0.6rem;
-  cursor: pointer;
-   background-color: var(--primary);
-  color: var(--light-2);
-  outline: none;
+.search-bar button {
+  padding: 0.59rem 1rem;
+  margin-top: 0.2868rem;
+  margin-right: 0.26rem;
   border: 1px solid var(--primary-light);
+  background-color: var(--primary);
+  color: white;
+  border-left: none;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
   transition: var(--transition);
-  box-shadow: 0 0 10px rgba(23, 23, 23, 0.15);
+  height: auto;
 }
 
 .search-bar button:hover{
