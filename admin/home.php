@@ -62,7 +62,7 @@
     <div class="table-section">
         <div class="table-header">
           <h1 class="table-title">Recent Submissions</h1>
-          <a href="#" class="view-link">View All</a>
+          <a href="dashboard.php?page=view_submission" class="view-link">View All</a>
         </div>
 
         <table>
@@ -111,7 +111,7 @@
     <div class="table-section">
         <div class="table-header">
           <h1 class="table-title">Most attempted Questions</h1>
-          <a href="#" class="view-link">View All</a>
+          <a href="dashboard.php?page=question_manage" class="view-link">View All</a>
         </div>
 
         <table>
