@@ -42,7 +42,9 @@ $user=$stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
 
+<!--Toast Message-->
 <div class="notification"></div>
+
     <div class="welcome-message">
      <div class="welcome-header">
        <h1>Manage Users</h1>

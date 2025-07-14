@@ -43,6 +43,16 @@ require_once '../auth/auth_validate.php';
             <i class="fa-solid fa-code nav-icon"></i>
             Submissions
           </a>
+
+          <a href="?page=topics" class="nav-item">
+            <i class="fa-solid fa-tag nav-icon"></i>
+            Topic
+          </a>
+
+          <a href="?page=achievements" class="nav-item">
+            <i class="fa-solid fa-trophy nav-icon"></i>
+            Achievements
+          </a>
         
       </div>
   </div>
@@ -54,11 +64,11 @@ require_once '../auth/auth_validate.php';
       if(isset($_GET['page'])){
         $page = $_GET['page'];
 
-        $allowed = ['home', 'question_manage','user_manage','view_submission'];
+        $allowed = ['home', 'question_manage','user_manage','view_submission','topics','achievements','add-achievement'];
 
         if(in_array($page,$allowed)&&file_exists($page.".php")){
-
-        include $page.".php";
+          if($page === 'add-achievement' ){include 'functions/add-achievement.php';}else{
+        include $page.".php";}
         }else{
           echo "<div class=not-found>Error 404 ! <br> Page not found</div>";
         }
