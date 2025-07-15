@@ -5,14 +5,45 @@
   $search = $_GET['q'] ?? '';
 
   if(!empty($search) && $search !== ''){
-    $stmt = $pdo->prepare("SELECT q.id as ques_id,q.title,q.difficulty,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id WHERE q.title LIKE :title OR t.topic LIKE :topic ORDER BY q.id DESC");
+    $stmt = $pdo->prepare("SELECT q.id as ques_id,q.title,q.difficulty,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id WHERE q.title LIKE :title OR t.name LIKE :topic ORDER BY q.id DESC");
     $stmt->execute(['title'=>'%'.$search.'%',
     'topic'=>'%'.$search.'%']);
   }else{
-    $stmt = $pdo->prepare("SELECT q.id as ques_id,q.title,q.difficulty,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id ORDER BY q.id DESC");
-    $stmt->execute();
+    $stmt = $pdo->query("SELECT q.id as ques_id,q.title,q.difficulty,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id ORDER BY q.id DESC");
   }
   $question = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  if(isset($_POST['search'])){
+
+      $difficulty = $_POST['difficulty']??'';
+      $category = $_POST['category']??'';
+
+      if($difficulty !== '' || !$category !== ''){
+
+        $sql = "SELECT q.id as ques_id,q.title,q.difficulty,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id WHERE 1=1";
+
+        $conditions = [];
+        $params = [];
+
+        if(!empty($difficulty)){
+          $conditions[] = "q.difficulty = :difficulty";
+          $params[':difficulty']  = $difficulty;
+        }
+
+        if(!empty($category)){
+          $conditions[] = "c.name = :category";
+          $params[':category']  = $category;
+        }
+
+        if(!empty($conditions)){
+          $sql .= " AND " .implode(' AND ',$conditions);
+        }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        $question = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      }
+  }
 
 ?>
 <!DOCTYPE html>
@@ -42,6 +73,32 @@
         <span class="profile-span">View profile</span>
       </div>
     </div>
+
+<!--Filter-->
+
+    <div class="filter-title">
+      <h1>Filters</h1>
+    </div>
+
+    <div class="filters">
+      <form action="" method="post">
+        <select name="difficulty" id="">
+          <option value="">All Difficulty</option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="Hard">Hard</option>
+        </select>
+
+        <select name="category" id="" class="result">
+          <option value="">All Category</option>
+          <option value="Dsa">Dsa</option>
+          <option value="Non-Dsa">Non-Dsa</option>
+        </select>
+
+       <input type="submit" name="search" value="Apply" class="submit-btn">
+      </form>
+    </div>
+
 
 <!--Question dsiplay-->
 
@@ -82,7 +139,17 @@
             <td><?= htmlspecialchars($q['name']) ?></td>
             <td ><span class="difficulty-col difficult-<?= strtolower(htmlspecialchars($q['difficulty']))?>"> <?= htmlspecialchars($q['difficulty']) ?></span></td>
             <td><?= htmlspecialchars($q['cat_name']) ?></td>
-            <td><?= htmlspecialchars($q['cat_name']) ?></td>
+            <td> <a href=""><button class="edit-btn" type="button">
+              <i class="fa-solid fa-pen-to-square"></i>
+              </button></a>
+
+          <form method="post" action="" style="display:inline;">
+            <input type="hidden" name="user_id" >
+            <button type="submit" class="delete-btn" onclick="return confirm('Delete this user?');">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </form>
+        </td>
           </tr>
            <?php endforeach; ?>
             </tbody>

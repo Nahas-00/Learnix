@@ -1,3 +1,19 @@
+<?php
+
+    include_once '../utils/connect.php';
+
+    $stmt = $pdo->query("SELECT COUNT(*) AS total_rows FROM question");
+    $ques = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $stmt = $pdo->query("SELECT COUNT(*) AS total_rows FROM users");
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $stmt = $pdo->query("SELECT COUNT(*) AS total_rows FROM submission");
+    $sub = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +47,7 @@
                     <i class="fa-solid fa-users nav-icon"></i>
                 </div>
             </div>
-              <div class="card-value">270</div>
+              <div class="card-value"><?= htmlspecialchars($user['total_rows']) ?></div>
         </div>
 
          <div class="card">
@@ -41,7 +57,7 @@
                     <i class="fa-solid fa-laptop-code nav-icon"></i>
                 </div>
             </div>
-              <div class="card-value">170</div>
+              <div class="card-value"><?= htmlspecialchars($ques['total_rows']) ?></div>
         </div>
 
          <div class="card">
@@ -51,7 +67,7 @@
                     <i class="fa-solid fa-code nav-icon"></i>
                 </div>
             </div>
-              <div class="card-value">100</div>
+              <div class="card-value"><?= htmlspecialchars($sub['total_rows']) ?></div>
         </div>
 
     </div>

@@ -41,6 +41,8 @@ h1{
   grid-template-columns:1fr 1fr;
   gap: 1rem;
   margin-top: 4.7rem;
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
 }
 
 .container-form label{
