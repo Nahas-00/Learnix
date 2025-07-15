@@ -51,6 +51,7 @@ try {
             description TEXT NOT NULL,
             category_id INT NOT NULL,
             topic_id INT NOT NULL,
+            difficulty ENUM('Easy', 'Medium', 'Hard') NOT NULL,
             FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE,
             FOREIGN KEY (topic_id) REFERENCES topic(id) ON DELETE CASCADE
         );

@@ -78,7 +78,7 @@ $search = $_GET['q'] ?? '';
           <div class="search-bar">
               <form method="get">
                 <input type="hidden" name="page" value="topics">
-                <input type="text" name="q" placeholder="Search users..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
+                <input type="text" name="q" placeholder="Search topic..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
                 <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button> 
               </form>
             </div>

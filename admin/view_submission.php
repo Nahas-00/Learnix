@@ -69,6 +69,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
   <link rel="stylesheet" href="../styles/toast.css">
   <link rel="stylesheet" href="../styles/submission.css">
+  <link rel="stylesheet" href="../styles/showcode.css">
 </head>
 <body>
  
@@ -139,10 +140,10 @@
                 <tr>
                     <th>Id</th>
                     <th>User</th>
-                    <th>Code</th>
                     <th>Language</th>
                     <th>Result</th>
                     <th>Timestamp</th>
+                    <th>Action</th>
                     
                 </tr>
             </thead>
@@ -161,14 +162,10 @@
                 <span><?= htmlspecialchars($user['username']) ?></span>
               </div>
             </td>
-           
-            <td><?= htmlspecialchars($user['code']) ?></td>
             <td><?= htmlspecialchars($user['language']) ?></td>
             <td> <span class="status status-<?= strtolower(htmlspecialchars($user['result']))?>"> <?= htmlspecialchars($user['result']) ?> </span></td>
             <td><?= htmlspecialchars($user['timestamp']) ?></td>
-           
-
-       
+           <td><button class="code-btn" data-code="<?= htmlspecialchars($user['code']) ?>" onclick="showCode(this)">View Code</button></td>
 
           </tr>
            <?php endforeach; ?>
@@ -176,6 +173,13 @@
         </table>
     </div>
 
+      <div class="code-overlay" id="code-overlay"></div>
+    <div class="code-dis" id="code-dis">
+      <div class="code-close-btn"><button onclick="closeCode()"><i class="fa-solid fa-xmark"></i></button></div>
+      <pre><p id="code-area" style="margin: left 0.2rem;"> </p></pre>
+    </div>
+
     <script src="../scripts/submission.js"></script>
+    <script src="../scripts/showcode.js"></script>
 </body>
 </html>
