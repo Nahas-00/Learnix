@@ -57,7 +57,7 @@
   <link rel="stylesheet" href="../styles/toast.css">
   <link rel="stylesheet" href="../styles/add-user.css">
   <link rel="stylesheet" href="../styles/question.css">
-  <link rel="stylesheet" href="../styles/showcode.css">
+  <link rel="stylesheet" href="../styles/showques.css">
 </head>
 <body>
   
@@ -157,6 +157,7 @@
           data-solution="<?= htmlspecialchars($q['solution']) ?>"
           data-hint="<?= htmlspecialchars($q['hint']) ?>"
           data-description="<?= htmlspecialchars($q['description']) ?>"
+         
           >View</button>
         </td>
           </tr>
@@ -168,7 +169,29 @@
     <div class="code-overlay" id="code-overlay"></div>
         <div class="code-dis" id="code-dis">
         <div class="code-close-btn"><button onclick="closeCode()"><i class="fa-solid fa-xmark"></i></button></div>
-        <pre><p id="code-area" style="margin: left 0.2rem;"> </p></pre>
+        <div class="ques-display-info">
+        <div class="ques-title" id="ques-title"></div>
+        <div class="ques-info">
+          <span class="ques-cat" id="ques-cat"></span>
+          <span class="ques-cat" id="ques-topic"></span>
+          <span class="ques-diff" id="ques-diff"></span>
+        </div>
+        <div class="ques-line"></div>
+        <div class="ques-description ques-text-style">
+        <span >Description</span>  
+        <p id="ques-des"> </p>
+      </div>
+        <div class="ques-solution ques-text-style">
+        <span id="">Solution</span>  
+       <pre><p id="ques-solution"> 
+
+       </p></pre></div>
+        <div class="ques-hint ques-text-style"> <span>Hint</span>
+        <p class="ques-hint" id="ques-hint"> </p></div>
+        <div class="ques-testcase ques-text-style"> 
+        <span>Test Case</span>  
+        <pre><p> </p></pre> </div>
+        </div>
     </div>
 
     <script src="../scripts/question.js"></script>
