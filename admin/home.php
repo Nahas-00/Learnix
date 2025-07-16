@@ -81,7 +81,7 @@
           <a href="dashboard.php?page=view_submission" class="view-link">View All</a>
         </div>
 
-        <table>
+        <table class="print-table">
             <thead>
                 <tr>
                     <th>User</th>

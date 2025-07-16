@@ -5,11 +5,11 @@
   $search = $_GET['q'] ?? '';
 
   if(!empty($search) && $search !== ''){
-    $stmt = $pdo->prepare("SELECT q.id as ques_id,q.title,q.difficulty,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id WHERE q.title LIKE :title OR t.name LIKE :topic ORDER BY q.id DESC");
+    $stmt = $pdo->prepare("SELECT q.id as ques_id,q.title,q.difficulty,q.solution,q.description,q.hint,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id WHERE q.title LIKE :title OR t.name LIKE :topic ORDER BY q.id DESC");
     $stmt->execute(['title'=>'%'.$search.'%',
     'topic'=>'%'.$search.'%']);
   }else{
-    $stmt = $pdo->query("SELECT q.id as ques_id,q.title,q.difficulty,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id ORDER BY q.id DESC");
+    $stmt = $pdo->query("SELECT q.id as ques_id,q.title,q.difficulty,q.solution,q.description,q.hint,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id ORDER BY q.id DESC");
   }
   $question = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -20,7 +20,7 @@
 
       if($difficulty !== '' || !$category !== ''){
 
-        $sql = "SELECT q.id as ques_id,q.title,q.difficulty,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id WHERE 1=1";
+        $sql = "SELECT q.id as ques_id,q.title,q.difficulty,q.solution,q.description,q.hint,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id WHERE 1=1";
 
         $conditions = [];
         $params = [];
@@ -57,6 +57,7 @@
   <link rel="stylesheet" href="../styles/toast.css">
   <link rel="stylesheet" href="../styles/add-user.css">
   <link rel="stylesheet" href="../styles/question.css">
+  <link rel="stylesheet" href="../styles/showcode.css">
 </head>
 <body>
   
@@ -104,7 +105,7 @@
 
 <div class="table-section">
         <div class="table-header">
-          <h1 class="table-title">Recent Submissions</h1>
+          <h1 class="table-title">Questions</h1>
 
             <div class="search-bar">
               <form method="get">
@@ -145,10 +146,18 @@
 
           <form method="post" action="" style="display:inline;">
             <input type="hidden" name="user_id" >
-            <button type="submit" class="delete-btn" onclick="return confirm('Delete this user?');">
+            <button type="submit" class="delete-btn" onclick="return confirm('Delete this question?');">
               <i class="fa-solid fa-trash"></i>
             </button>
           </form>
+
+          <button onclick="showCode(this)" class="ques-view-btn" data-title="<?= htmlspecialchars($q['title']) ?>"
+          data-name="<?= htmlspecialchars($q['name']) ?>" data-difficulty="<?= htmlspecialchars($q['difficulty']) ?>"
+          data-category="<?= htmlspecialchars($q['cat_name']) ?>"
+          data-solution="<?= htmlspecialchars($q['solution']) ?>"
+          data-hint="<?= htmlspecialchars($q['hint']) ?>"
+          data-description="<?= htmlspecialchars($q['description']) ?>"
+          >View</button>
         </td>
           </tr>
            <?php endforeach; ?>
@@ -156,7 +165,14 @@
         </table>
     </div>
 
+    <div class="code-overlay" id="code-overlay"></div>
+        <div class="code-dis" id="code-dis">
+        <div class="code-close-btn"><button onclick="closeCode()"><i class="fa-solid fa-xmark"></i></button></div>
+        <pre><p id="code-area" style="margin: left 0.2rem;"> </p></pre>
+    </div>
+
     <script src="../scripts/question.js"></script>
+    <script src="../scripts/showQuestion.js"></script>
 
 </body>
 </html>

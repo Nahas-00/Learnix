@@ -109,3 +109,18 @@
 .filter-title h1{
   font-size: 1.53rem;
 }
+
+.ques-view-btn{
+  background-color: #7c3aed;
+  color: white;
+  padding: 0.32rem;
+  font-size: 0.8rem;
+  border: 1px solid #0f172a;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+}
+
+.ques-view-btn:hover{
+  background-color: #8b5cf6;
+  cursor: pointer;
+}
