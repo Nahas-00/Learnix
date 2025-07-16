@@ -228,6 +228,9 @@ body{
   margin-bottom: 1.5rem;
 }
 
+.print-table{
+  overflow-x: auto;
+}
 
 .table-title{
   font-family: 'Poppins', sans-serif;

@@ -93,7 +93,7 @@ $user=$stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="table-section">
         <div class="table-header">
-          <h1 class="table-title">Recent Submissions</h1>
+          <h1 class="table-title">Existing User</h1>
 
             <div class="search-bar">
               <form method="get">
