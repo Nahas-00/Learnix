@@ -46,7 +46,7 @@ body{
   z-index: 1001;
   max-width: 580px;
   max-height: 550px;
-  overflow: auto;
+  overflow-y: auto;
   display: none;
   flex-direction: column;
   color: white;
@@ -149,4 +149,17 @@ body{
   border-radius: 0.2rem;
   border-left: 4px solid #fdcb6e;
   font-size: 1.1rem;
+}
+
+#ques-des{
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.fixed-title{
+  max-width: 250px;        
+  white-space: normal;     
+  word-wrap: break-word;    
+  overflow-wrap: break-word;
 }
