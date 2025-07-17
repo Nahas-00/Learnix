@@ -43,6 +43,7 @@ h1{
   margin-top: 4.7rem;
   border-radius: 8px;
   box-shadow: var(--box-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.705);
 }
 
 .container-form label{

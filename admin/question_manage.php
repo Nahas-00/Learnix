@@ -136,7 +136,7 @@
           <tr>
 
             <td><?= htmlspecialchars($q['ques_id']) ?> </td>
-            <td><?= htmlspecialchars($q['title']) ?></td>           
+            <td class="fixed-title"><?= htmlspecialchars($q['title']) ?></td>           
             <td><?= htmlspecialchars($q['name']) ?></td>
             <td ><span class="difficulty-col difficult-<?= strtolower(htmlspecialchars($q['difficulty']))?>"> <?= htmlspecialchars($q['difficulty']) ?></span></td>
             <td><?= htmlspecialchars($q['cat_name']) ?></td>
@@ -157,7 +157,7 @@
           data-solution="<?= htmlspecialchars($q['solution']) ?>"
           data-hint="<?= htmlspecialchars($q['hint']) ?>"
           data-description="<?= htmlspecialchars($q['description']) ?>"
-         
+         data-id="<?= htmlspecialchars($q['ques_id']) ?>"
           >View</button>
         </td>
           </tr>

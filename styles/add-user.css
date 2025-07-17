@@ -27,6 +27,7 @@
   background-color:var(--dark-2);
   z-index: 1000;
   display: none;
+  
 }
 .overlay{
   position: fixed;
