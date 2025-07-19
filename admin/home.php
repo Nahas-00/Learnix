@@ -11,6 +11,42 @@
     $stmt = $pdo->query("SELECT COUNT(*) AS total_rows FROM submission");
     $sub = $stmt->fetch(PDO::FETCH_ASSOC);
 
+      $sub_stmt = $pdo->prepare("
+        SELECT 
+        s.id as sub_id,
+        s.code,
+        s.language,
+        s.result,
+        s.timestamp,
+        u.username,
+        u.profile_pic,
+        q.title AS question_title
+        FROM submission s
+        JOIN users u ON u.id = s.uid
+        JOIN question q ON q.id = s.qid
+        ORDER BY s.timestamp DESC
+        LIMIT 3
+    ");
+$sub_stmt->execute();
+$submission_view = $sub_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  $most_attempted_stmt = $pdo->prepare("
+      SELECT 
+          q.id AS question_id,
+          q.title,
+          q.difficulty,
+          COUNT(s.id) AS attempt_count
+      FROM question q
+      LEFT JOIN submission s ON s.qid = q.id
+      GROUP BY q.id
+      ORDER BY attempt_count DESC
+      LIMIT 3
+  ");
+  $most_attempted_stmt->execute();
+  $most_attempted = $most_attempted_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
 
 ?>
 
@@ -34,8 +70,10 @@
       </div>
 
       <div class="profile-icon">
+        <a href="functions/admin_profile.php">
         <img src="../uploads/no_profile.png" alt="">
-        <span class="profile-span">View profile</span>
+        <span class="profile-span" style="color: white;">View profile</span>
+        </a>
       </div>
     </div>
 
@@ -93,30 +131,28 @@
             </thead>
 
             <tbody>
-                <tr>
-            <td>
-              <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <div class="user-avatar"><img src="../uploads/20250102_231850.jpg" alt=""></div>
-                <span>John Doe</span>
-              </div>
-            </td>
-            <td>Two Sum</td>
-            <td>Python</td>
-            <td><span class="status status-success">Accepted</span></td>
-            <td>2023-11-15</td>
-          </tr>
+
+            <?php foreach ($submission_view as $submission): ?>
           <tr>
             <td>
               <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <div class="user-avatar"><img src="../uploads/no_profile.png" alt=""></div>
-                <span>Alice Smith</span>
+                <div class="user-avatar"><img src="../uploads/<?= htmlspecialchars($submission['profile_pic'] ?? 'no_profile.png') ?>" alt=""></div>
+                <span><?= htmlspecialchars($submission['username']) ?></span>
               </div>
             </td>
-            <td>Reverse String</td>
-            <td>JavaScript</td>
-            <td><span class="status status-failed">Failed</span></td>
-            <td>2023-11-14</td>
+            <td><?= htmlspecialchars($submission['question_title']) ?></td>
+            <td><?= htmlspecialchars($submission['language']) ?></td>
+            <td>
+              <?php if (strtolower($submission['result']) === 'success'): ?>
+                <span class="status status-success"><?= htmlspecialchars($submission['result']) ?></span>
+              <?php else: ?>
+                <span class="status status-failed"><?= htmlspecialchars($submission['result']) ?></span>
+              <?php endif; ?>
+            </td>
+            <td><?= date('Y-m-d', strtotime($submission['timestamp'])) ?></td>
           </tr>
+
+          <?php endforeach; ?>
             </tbody>
         </table>
     </div>
@@ -140,17 +176,13 @@
             </thead>
 
             <tbody>
-               <tr>
-            <td>Two Sum</td>
-            <td><span class="problem-tag">Easy</span></td>
-            <td>1,248</td>
-            
-          </tr>
+               <?php foreach ($most_attempted as $q): ?>
           <tr>
-            <td>Reverse String</td>
-            <td><span class="problem-tag">Hard</span></td>
-            <td>987</td>
+            <td><?= htmlspecialchars($q['title']) ?></td>
+            <td><span class="problem-tag"><?= ucfirst(htmlspecialchars($q['difficulty'])) ?></span></td>
+            <td><?= htmlspecialchars($q['attempt_count']) ?></td>
           </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>

@@ -153,6 +153,8 @@ $user=$stmt->fetchAll(PDO::FETCH_ASSOC);
         </table>
     </div>
 
+      <div class="no-use"></div>
+
      <?php if(isset($msg) && isset($title)): ?>
     <script>
         window.toastMsgData = {

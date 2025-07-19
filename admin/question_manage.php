@@ -2,6 +2,16 @@
   
   include '../utils/connect.php';
 
+  $showAddUser = false;
+  $msg = null;
+  $title = null;
+
+if (isset($_SESSION['toast'])) {
+  $msg = $_SESSION['toast']['msg'];
+  $title = $_SESSION['toast']['title'];
+  unset($_SESSION['toast']);
+}
+
   $search = $_GET['q'] ?? '';
 
   if(!empty($search) && $search !== ''){
@@ -80,7 +90,7 @@
     <div class="filter-title">
       <h1>Filters</h1>
     </div>
-
+<div class="filterandadd">
     <div class="filters">
       <form action="" method="post">
         <select name="difficulty" id="">
@@ -99,6 +109,9 @@
        <input type="submit" name="search" value="Apply" class="submit-btn">
       </form>
     </div>
+
+    <a href="functions/add-question.php" style="text-decoration: none; color:white;"><div class="add-ques-btn"><i class="fa-solid fa-plus"></i></div></a>
+</div>
 
 
 <!--Question dsiplay-->
@@ -140,13 +153,14 @@
             <td><?= htmlspecialchars($q['name']) ?></td>
             <td ><span class="difficulty-col difficult-<?= strtolower(htmlspecialchars($q['difficulty']))?>"> <?= htmlspecialchars($q['difficulty']) ?></span></td>
             <td><?= htmlspecialchars($q['cat_name']) ?></td>
-            <td> <a href=""><button class="edit-btn" type="button">
+
+            <td> <a href="functions/edit-question.php?id=<?= htmlspecialchars($q['ques_id']) ?>"><button class="edit-btn" type="button">
               <i class="fa-solid fa-pen-to-square"></i>
               </button></a>
 
-          <form method="post" action="" style="display:inline;">
-            <input type="hidden" name="user_id" >
-            <button type="submit" class="delete-btn" onclick="return confirm('Delete this question?');">
+          <form method="post" action="functions/delete_ques.php" style="display:inline;">
+            <input type="hidden" name="ques_id" value="<?= htmlspecialchars($q['ques_id'])?>">
+            <button type="submit" class="delete-btn" name="ques-delete-btn" onclick="return confirm('Delete this question?');">
               <i class="fa-solid fa-trash"></i>
             </button>
           </form>
@@ -194,8 +208,20 @@
         </div>
     </div>
 
+    <div class="no-use"></div>
+
+     <?php if(isset($msg) && isset($title)): ?>
+    <script>
+        window.toastMsgData = {
+            title: <?= json_encode($title) ?> ,
+            msg : <?= json_encode($msg) ?> 
+        }
+    </script>
+    <?php endif; ?>
+
     <script src="../scripts/question.js"></script>
     <script src="../scripts/showQuestion.js"></script>
+    <script type="module" src="../scripts/add-user-toast.js"></script>
 
 </body>
 </html>

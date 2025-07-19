@@ -99,6 +99,10 @@
   transition: all 0.3s ease;
   transform: translateY(-5px);
  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
 }
 
 .filters .submit-btn:hover{
@@ -123,4 +127,43 @@
 .ques-view-btn:hover{
   background-color: #8b5cf6;
   cursor: pointer;
+}
+
+.filters form select,
+.filters form input.submit-btn {
+  height: 36px;
+}
+
+
+.filterandadd{
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-ques-btn{
+  width: 40px;
+  height: 30px;
+  border-radius: 0.46rem;
+  margin-top: 0.73rem;
+  background-color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  transition: var(--transition);
+  font-size: 1rem;
+  border: 1px solid black;
+}
+
+.add-ques-btn:hover{
+  transform: scaleX(1.0754);
+  background-color: var(--primary-light);
+  box-shadow: 0 8px 16px rgba(9, 9, 9, 0.33);
+  border: 1px solid white;
+}
+
+.no-use{
+  width: 100%;
+  height: 2rem;
+  
 }
