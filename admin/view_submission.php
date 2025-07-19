@@ -6,11 +6,11 @@
  $search = $_GET['q']??'';
 
  if(!empty($search) && $search!==''){
-  $stmt = $pdo->prepare("Select s.id as sub_id ,s.code,s.language,s.result,s.timestamp,u.username,u.profile_pic from submission s JOIN users u on u.id=s.uid WHERE u.username LIKE :username OR u.email LIKE :email ORDER BY timestamp DESC ");
+  $stmt = $pdo->prepare("Select s.id as sub_id ,s.code,s.language,s.result,s.timestamp,u.username,u.profile_pic,q.title from submission s JOIN users u on u.id=s.uid JOIN question q on s.qid=q.id WHERE u.username LIKE :username OR u.email LIKE :email ORDER BY timestamp DESC ");
   $stmt->execute(['username'=>'%'.$search.'%',
     'email'=>'%'.$search.'%']);
  }else{
-   $stmt = $pdo->prepare("Select s.id as sub_id ,s.code,s.language,s.result,s.timestamp,u.username,u.profile_pic from submission s JOIN users u on u.id=s.uid ORDER BY timestamp DESC ");
+   $stmt = $pdo->prepare("Select s.id as sub_id ,s.code,s.language,s.result,s.timestamp,u.username,u.profile_pic,q.title from submission s JOIN users u on u.id=s.uid JOIN question q on s.qid=q.id ORDER BY timestamp DESC ");
   $stmt->execute();
  }
 
@@ -22,7 +22,7 @@
     $language = $_POST['language'] ?? '';
 
     if($result !== "" || $date !== "" || $language !== ""){
-       $sql="Select s.id as sub_id ,s.code,s.language,s.result,s.timestamp,u.username,u.profile_pic from submission s JOIN users u ON u.id = s.uid WHERE 1=1";
+       $sql="Select s.id as sub_id ,s.code,s.language,s.result,s.timestamp,u.username,u.profile_pic,q.title from submission s JOIN users u ON u.id = s.uid JOIN question q on s.qid=q.id WHERE 1=1";
 
        $conditions = [];
        $params = [];
@@ -140,6 +140,7 @@
                 <tr>
                     <th>Id</th>
                     <th>User</th>
+                    <th>Question</th>
                     <th>Language</th>
                     <th>Result</th>
                     <th>Timestamp</th>
@@ -162,6 +163,7 @@
                 <span><?= htmlspecialchars($user['username']) ?></span>
               </div>
             </td>
+            <td><?= htmlspecialchars($user['title']) ?></td>
             <td><?= htmlspecialchars($user['language']) ?></td>
             <td> <span class="status status-<?= strtolower(htmlspecialchars($user['result']))?>"> <?= htmlspecialchars($user['result']) ?> </span></td>
             <td><?= htmlspecialchars($user['timestamp']) ?></td>
