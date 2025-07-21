@@ -67,8 +67,10 @@ $search = $_GET['q'] ?? '';
      </div>
 
       <div class="profile-icon">
+        <a href="functions/admin_profile.php">
         <img src="../uploads/no_profile.png" alt="">
-        <span class="profile-span">View profile</span>
+        <span class="profile-span" style="color: white;">View profile</span>
+        </a>
       </div>
     </div>
 
