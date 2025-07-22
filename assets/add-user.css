@@ -1,0 +1,199 @@
+:root {
+  --primary: #7c3aed;
+  --primary-light: #8b5cf6;
+  --primary-dark: #6d28d9;
+  --secondary: #a78bfa;
+  --accent: #f59e0b;
+  --dark-1: #0f172a;
+  --dark-2: #1e293b;
+  --dark-3: #334155;
+  --light-1: #f8fafc;
+  --light-2: #e2e8f0;
+  --light-3: #94a3b8;
+  --success: #10b981;
+  --danger: #ef4444;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.add-user{
+  padding: 2rem 3rem;
+  position: absolute;
+  border-radius: 10px;
+  top: 50%;
+  left: 56%;
+  transform: translate(-50%,-50%);
+  background-color:var(--dark-2);
+  z-index: 1000;
+  display: none;
+  
+}
+.overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.5);
+   backdrop-filter: blur(2.5px);
+   display: none;
+}
+
+.add-user-title{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+   font-family:'Poppins', sans-serif;
+}
+
+.add-user-title i{
+  font-size: 1.8rem;
+  color: var(--light-3);
+  cursor: pointer;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.12);
+}
+
+.add-user-title h1{
+  font-size: 2rem;
+}
+
+.user-form{
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.username , .email,.password{
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  flex: 1 1 300px;
+}
+
+form label{
+  font-size: 1rem;
+  font-family:'Poppins', sans-serif;
+}
+
+form input{
+  padding: 0.65rem 2rem;
+  margin-top: 0.3rem;
+  width: 80%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.submit-btn{
+  flex-basis: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.submit-btn input[type="submit"]{
+  padding: 0.6rem 0.2rem;
+  width: 120px;
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background-color: var(--primary);
+  color: var(--light-2);
+  outline: none;
+  border: 1px solid var(--primary-light);
+  transition: var(--transition);
+  box-shadow: 0 0 10px rgba(23, 23, 23, 0.15);
+}
+
+.submit-btn input[type="submit"]:hover{
+  background-color: var(--primary-light);
+  transform: translateY(-3px);
+  border-color: var(--light-1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+
+form input:focus{
+  outline: none;
+  border:3px solid var(--primary-dark);
+}
+
+
+.edit-btn , .delete-btn{
+  font-size: 1rem;
+  margin-right: .4rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.edit-btn{
+  background: var(--accent);
+}
+
+.delete-btn{
+  background: var(--danger);
+}
+
+.edit-btn:hover{
+  background-color: #e18f14;
+  border: 1px solid black;
+}
+
+.delete-btn:hover{
+   background-color:#d7225b;
+  border: 1px solid black;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem 0;
+}
+
+.search-bar form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--light-2);
+  border-radius: 6px 0 0 6px;
+  outline: none;
+}
+
+.search-bar button {
+  padding: 0.59rem 1rem;
+  margin-top: 0.2868rem;
+  margin-right: 0.26rem;
+  border: 1px solid var(--primary-light);
+  background-color: var(--primary);
+  color: white;
+  border-left: none;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  transition: var(--transition);
+  height: auto;
+}
+
+.search-bar button:hover{
+  background-color: var(--primary-light);
+  transform: scaleX(1.07);
+  border-color: var(--light-1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.no-use{
+  width: 100%;
+  height: 2rem;
+  
+}
