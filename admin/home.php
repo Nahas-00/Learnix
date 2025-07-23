@@ -179,7 +179,7 @@ $submission_view = $sub_stmt->fetchAll(PDO::FETCH_ASSOC);
                <?php foreach ($most_attempted as $q): ?>
           <tr>
             <td><?= htmlspecialchars($q['title']) ?></td>
-            <td><span class="problem-tag"><?= ucfirst(htmlspecialchars($q['difficulty'])) ?></span></td>
+            <td><span class="problem-tag difficult-<?= strtolower(htmlspecialchars($q['difficulty'])) ?>"><?= ucfirst(htmlspecialchars($q['difficulty'])) ?></span></td>
             <td><?= htmlspecialchars($q['attempt_count']) ?></td>
           </tr>
             <?php endforeach; ?>
