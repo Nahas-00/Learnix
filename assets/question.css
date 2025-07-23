@@ -1,0 +1,88 @@
+.difficult-easy{
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+}
+
+.difficult-medium{
+    background-color: rgba(240, 199, 14, 0.178);
+    color: #fff12e;
+}
+
+.difficult-hard{
+    color: var(--danger);
+    background-color: rgba(218, 62, 62, 0.178);
+}
+
+.filters{
+  margin: 0 1rem;
+  margin-bottom: 1.5rem;
+  padding: 0.5 1.5rem;
+}
+
+.filters form{
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+}
+
+.filters select{
+  padding: 0.6rem 1rem;
+  max-height: 36px;
+  border-radius: 0.4rem;
+  background-color: #334155;
+  color: aliceblue;
+   transition: all 0.3s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+}
+
+.filters select:focus{
+  border: 1px solid #8b5cf6;
+  background-color:#1e293b ;
+    box-shadow: 0 6px 16px rgba(98, 13, 164, 0.282);
+}
+
+.filters input{
+  max-height: 14px;
+  max-width: 100px;
+  text-align: center;
+   border-radius: 0.4rem;
+  background-color: #334155;
+  color: aliceblue;
+  padding: 0.6rem 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+}
+
+
+.filters input:focus{
+    border: 1px solid #8b5cf6;
+  background-color:#1e293b ;
+    box-shadow: 0 6px 16px rgba(98, 13, 164, 0.282);
+}
+
+.filters .submit-btn{
+  padding:0.2rem 1rem;
+  text-align: center;
+  max-width: 100px;
+  max-height: 36px;
+  text-align: center;
+  background-color: #7c3aed;
+  border-radius: 12px;
+  border: 1px solid black;
+  transition: all 0.3s ease;
+  transform: translateY(-5px);
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.filters .submit-btn:hover{
+  background-color: #8b5cf6;
+  border: 1px solid white;
+}
+
+.filter-title h1{
+  font-size: 1.53rem;
+}

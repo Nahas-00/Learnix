@@ -456,3 +456,7 @@ td{
     color: var(--danger);
     background-color: rgba(218, 62, 62, 0.178);
 }
+
+.ques-table tr:hover{
+  background: var(--dark-2);
+}

@@ -37,7 +37,7 @@
                 $title= 'Warning';
             }else{
 
-                if($username){
+                if($user['username']){
                     $msg="Username already taken.";
                     $title= 'warning';
                 }else{
