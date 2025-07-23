@@ -337,6 +337,21 @@ td{
   cursor:pointer;
 }
 
+.difficult-easy{
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+}
+
+.difficult-medium{
+    background-color: rgba(240, 199, 14, 0.178);
+    color: #fff12e;
+}
+
+.difficult-hard{
+    color: var(--danger);
+    background-color: rgba(218, 62, 62, 0.178);
+}
+
 
 
 
