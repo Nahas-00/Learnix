@@ -5,7 +5,7 @@
   
  $id = $_SESSION['userid'];
 
-   $stmt = $pdo->prepare("Select s.id as sub_id ,s.code,s.language,s.result,s.timestamp,u.username,u.profile_pic,q.title from submission s JOIN users u on u.id=s.uid JOIN question q on s.qid=q.id WHERE s.uid = ? ORDER BY timestamp DESC ");
+  $stmt = $pdo->prepare("Select s.id as sub_id ,s.code,s.language,s.result,s.timestamp,u.username,u.profile_pic,q.title from submission s JOIN users u on u.id=s.uid JOIN question q on s.qid=q.id WHERE s.uid = ? ORDER BY timestamp DESC ");
   $stmt->execute([$id]);
 
 
@@ -82,7 +82,7 @@
      </div>
 
       <div class="profile-icon">
-        <a href="functions/admin_profile.php">
+        <a href="function/profile.php">
         <img src="
          <?= 
             !empty($info['profile_pic'])&&file_exists('../uploads/'.$info['profile_pic'])? '../uploads/'.$info['profile_pic'] 

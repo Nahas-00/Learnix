@@ -73,7 +73,7 @@ $most_attempted = $most_attempted_stmt->fetchAll(PDO::FETCH_ASSOC);
       </div>
 
       <div class="profile-icon">
-        <a href="functions/admin_profile.php">
+        <a href="function/profile.php">
         <img src="
           <?= 
             !empty($user['profile_pic'])&&file_exists('../uploads/'.$user['profile_pic'])? '../uploads/'.$user['profile_pic'] 
@@ -166,18 +166,15 @@ $most_attempted = $most_attempted_stmt->fetchAll(PDO::FETCH_ASSOC);
           <a href="dashboard.php?page=question_manage" class="view-link">View All</a>
         </div>
 
-        <table>
+        <table class="ques-table">
             <thead>
-                <tr>
-                    <th>Question</th>
-                    <th>Difficulty</th>
-                    <th>Topic</th>
-                </tr>
+              
             </thead>
 
             <tbody>
                <?php foreach ($most_attempted as $q): ?>
           <tr>
+            <td><?= htmlspecialchars($q['question_id']) ?></td>
             <td><?= htmlspecialchars($q['title']) ?></td>
             <td><span class="problem-tag difficulty-col difficult-<?= strtolower(htmlspecialchars($q['difficulty']))?>"><?= ucfirst(htmlspecialchars($q['difficulty'])) ?></span></td>
             <td><?= htmlspecialchars(ucfirst($q['name'])) ?></td>
