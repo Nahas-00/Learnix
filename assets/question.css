@@ -1,11 +1,39 @@
+:root {
+  --primary: #7c3aed;
+  --primary-light: #8b5cf6;
+  --primary-dark: #6d28d9;
+  --secondary: #a78bfa;
+  --accent: #f59e0b;
+  --dark-1: #0f172a;
+  --dark-2: #1e293b;
+  --dark-3: #334155;
+  --light-1: #f8fafc;
+  --light-2: #e2e8f0;
+  --light-3: #94a3b8;
+  --success: #10b981;
+  --danger: #ef4444;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+.difficulty-col{
+  display: inline-block;
+  font-size: 1rem;
+  padding: 0.25rem 0.75rem;
+  font-weight: 600;
+  border-radius: 1rem;
+}
+
 .difficult-easy{
   background-color: rgba(16, 185, 129, 0.1);
   color: var(--success);
 }
 
 .difficult-medium{
-    background-color: rgba(240, 199, 14, 0.178);
-    color: #fff12e;
+    background-color: rgba(240, 199, 14, 0.14);
+    color: rgb(192, 189, 8);
 }
 
 .difficult-hard{
@@ -13,10 +41,19 @@
     background-color: rgba(218, 62, 62, 0.178);
 }
 
+
+
 .filters{
   margin: 0 1rem;
   margin-bottom: 1.5rem;
   padding: 0.5 1.5rem;
+}
+
+.filterandadd{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
 }
 
 .filters form{
@@ -32,7 +69,7 @@
   background-color: #334155;
   color: aliceblue;
    transition: all 0.3s ease;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+
 }
 
 .filters select:focus{
@@ -50,7 +87,7 @@
   color: aliceblue;
   padding: 0.6rem 1rem;
   transition: all 0.3s ease;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+  
 }
 
 
@@ -61,7 +98,7 @@
 }
 
 .filters .submit-btn{
-  padding:0.2rem 1rem;
+  padding:0.4rem 1rem;
   text-align: center;
   max-width: 100px;
   max-height: 36px;
@@ -71,7 +108,7 @@
   border: 1px solid black;
   transition: all 0.3s ease;
   transform: translateY(-5px);
- 
+  margin-top: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -85,4 +122,96 @@
 
 .filter-title h1{
   font-size: 1.53rem;
+}
+
+
+.search-bar form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--light-2);
+  border-radius: 6px 0 0 6px;
+  outline: none;
+}
+
+.search-bar button {
+  padding: 0.5rem 1rem;
+  margin-top: 0.06rem;
+  margin-right: 0.26rem;
+  border: 1px solid var(--primary-light);
+  background-color: var(--primary);
+  color: white;
+  border-left: none;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  transition: var(--transition);
+  height: auto;
+}
+
+.search-bar button:hover{
+  background-color: var(--primary-light);
+  transform: scaleX(1.07);
+  border-color: var(--light-1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.disp-ques{
+  display: flex;
+  flex-direction: column;
+  margin-top: 3.6rem;
+  width: 100%;
+}
+
+.ques {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 1rem;
+  align-items: center;
+  border-bottom: 1px solid #475569;
+}
+
+.ques.even {
+  background-color: var(--dark-2);
+}
+
+.ques.odd {
+  background-color: #334155; 
+}
+
+.ques > div {
+  flex: 1;
+  text-align: center;
+  color: white;
+  font-size: 1rem;
+}
+
+.ques:hover{
+  background-color: #0b111f7e;
+}
+
+.ques .difficulty {
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+
+.ques-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: background-color 0.3s ease;
+}
+
+.ques-link:hover .ques {
+  background-color: #0b111f7e;
+  cursor: pointer;
 }
