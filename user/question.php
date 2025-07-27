@@ -7,6 +7,65 @@
 
     $top_stmt = $pdo->query('SELECT *FROM topic');
     $top = $top_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $search = $_GET['q'] ?? '';
+
+  if(!empty($search) && $search !== ''){
+    $stmt = $pdo->prepare("SELECT q.id as ques_id,q.title,q.difficulty,q.solution,q.description,q.hint,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id WHERE q.title LIKE :title ORDER BY q.id DESC");
+    $stmt->execute(['title'=>'%'.$search.'%']);
+  }else{
+    $stmt = $pdo->prepare("SELECT q.id as ques_id,q.title,q.difficulty,q.solution,q.description,q.hint,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id WHERE q.id NOT IN (SELECT qid FROM submission WHERE uid = ?) ORDER BY q.id DESC");
+    $stmt->execute([$id]);
+  }
+  $question = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  if(isset($_POST['search'])){
+
+      $difficulty = $_POST['difficulty']??'';
+      $category = $_POST['category']??'';
+      $topic = $_POST['topic']??'';
+      $attempt = $_POST['attempt']??'';
+
+      if($difficulty !== '' || !$category !== '' || $topic !== '' || $attempt !== ''){
+
+        $sql = "SELECT q.id as ques_id,q.title,q.difficulty,q.solution,q.description,q.hint,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id WHERE 1=1";
+
+        $conditions = [];
+        $params = [];
+
+        if(!empty($difficulty)){
+          $conditions[] = "q.difficulty = :difficulty";
+          $params[':difficulty']  = $difficulty;
+        }
+
+        if(!empty($category)){
+          $conditions[] = "c.name = :category";
+          $params[':category']  = $category;
+        }
+
+        if(!empty($topic)){
+          $conditions[] = "t.name = :topic";
+          $params[':topic']  = $topic;
+        }
+
+        if($attempt === 'attempted'){
+          $conditions[] = "q.id IN (SELECT qid FROM submission WHERE uid = :uid)";
+          $params[':uid'] = $id;
+        } elseif($attempt === 'unattempted' ) { 
+          $conditions[] = "q.id NOT IN (SELECT qid FROM submission WHERE uid = :uid)";
+          $params[':uid'] = $id;
+        }
+
+        if(!empty($conditions)){
+          $sql .= " AND " .implode(' AND ',$conditions);
+        }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        $question = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      }
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -47,6 +106,7 @@
     <div class="filter-title">
       <h1>Filters</h1>
     </div>
+
 <div class="filterandadd">
     <div class="filters">
       <form action="" method="post">
@@ -73,15 +133,44 @@
         <select name="attempt" id="" class="result">
           <option value="unattempted">Unattempted</option>
           <option value="attempted">Attempted</option>
-          <option value="all">All question</option>
+          <option value="">All question</option>
         </select>
 
        <input type="submit" name="search" value="Apply" class="submit-btn">
       </form>
+
     </div>
+
+    <div class="search-bar">
+              <form method="get">
+                <input type="hidden" name="page" value="question">
+                <input type="text" name="q" placeholder="Search questions..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button> 
+              </form>
+            </div>
 
    
 </div>
+
+            <!--Question display section-->
+
+      <div class="disp-ques">
+        <?php foreach($question as $index => $q): ?>
+          <a href="function/code-area.php?id=<?= $q['ques_id'] ?>" class="ques-link" styl>
+          <div class="ques <?= $index % 2 === 0 ? 'even' : 'odd' ?>">
+            <div class="id"><?= htmlspecialchars($q['ques_id']) ?></div>
+            <div class="title"><?= htmlspecialchars($q['title']) ?></div>
+            <div class="topic"><?= htmlspecialchars($q['name']) ?></div>
+            <div class="">
+             <span class="difficulty-col <?= 'difficult-' . strtolower($q['difficulty']) ?>"> <?= ucfirst($q['difficulty']) ?> </span>
+            </div>
+          </div>
+          </a>
+        <?php endforeach; ?>
+      </div>
+
+
+      <script src="../scripts/question.js"></script>
 
 </body>
 </html>

@@ -113,7 +113,7 @@ $most_attempted = $most_attempted_stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="table-section">
         <div class="table-header">
           <h1 class="table-title">Recent Submissions</h1>
-          <a href="dashboard.php?page=view_submission" class="view-link">View All</a>
+          <a href="dashboard.php?page=submission" class="view-link">View All</a>
         </div>
 
         <table class="print-table">
@@ -163,7 +163,7 @@ $most_attempted = $most_attempted_stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="table-section">
         <div class="table-header">
           <h1 class="table-title">Continue Learning</h1>
-          <a href="dashboard.php?page=question_manage" class="view-link">View All</a>
+          <a href="dashboard.php?page=question" class="view-link">View All</a>
         </div>
 
         <table class="ques-table">
