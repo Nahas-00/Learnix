@@ -128,7 +128,7 @@ Output: <?= htmlspecialchars($tc['output']) ?>
       </div>
       <div class="io-content-wrapper">
         <div id="testcase-panel" class="tab-panel active">
-         <div class="test-input">Input <br> <?= $testcases[0]['input'] ?> </div>
+         <div class="testcase-input">Input <br> <?= $testcases[0]['input'] ?> </div>
          <div class="test-output"> Output <br> <?= $testcases[0]['output'] ?>  </div>
          <div class="testcase-status"></div>
         </div>
