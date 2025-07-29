@@ -46,6 +46,9 @@
       <i class="bi bi-box-arrow-left"></i> Go Back
       </a>
     </button>
+    <button onclick="openChat()">
+      <i class="fa-solid fa-comments"></i>
+    </button>
     <button id="run-btn">
       <i class="fas fa-play"></i> Run
     </button>
@@ -67,8 +70,8 @@
         <span>Problem Statement</span>
       </div>
       <div class="hint-sol-btn">
-        <button class="sol-hint-btn">Hint</button>
-        <button class="sol-hint-btn">Solution</button>
+        <button class="sol-hint-btn" onclick="showHint()">Hint</button>
+        <button class="sol-hint-btn"  onclick="showSolution()">Solution</button>
       </div>
     </div>
 
@@ -127,12 +130,14 @@ Output: <?= htmlspecialchars($tc['output']) ?>
         </button>
       </div>
       <div class="io-content-wrapper">
-        <div id="testcase-panel" class="tab-panel active">
-         <div class="testcase-input">Input <br> <?= $testcases[0]['input'] ?> </div>
-         <div class="test-output"> Output <br> <?= $testcases[0]['output'] ?>  </div>
-         <div class="testcase-status"></div>
+        <div id="testcase-panel" class="tab-panel active" style="margin-bottom: 0.8rem;">
+          <div class="testcase-status" id="testcase-status"></div>
+         <div class="test-input" >Input <br> <p id="test-input"><?= $testcases[0]['input'] ?></p> </div>
+         <div class="test-output"> Output <br> <p id="test-output"><?= $testcases[0]['output'] ?></p>  </div>
+
+         </div>
         </div>
-        <div id="output-panel" class="tab-panel">
+        <div id="output-panel" class="tab-panel" margin-bottom: 0.8rem;>
             <div id="output-content" class="output-content">
               // Your output will appear here
           </div>
@@ -157,6 +162,37 @@ Output: <?= htmlspecialchars($tc['output']) ?>
 
     </div>
   </div>
+</div>
+
+<div class="show-overlay" id="overlay-disp"></div>
+
+<div class="show-hint" id="hint-disp">
+  <div class="btn-close-hint">
+    <button onclick="closeHint()">X</button>
+  </div>
+  <div>
+ <pre style="background-color:transparent;"> <?= htmlspecialchars($question['hint']) ?></pre>
+ </div>
+</div>
+
+<div class="show-hint" id="sol-disp">
+  <div class="btn-close-hint">
+    <button onclick="closeSolution()">X</button>
+  </div>
+  <div>
+ <pre style="background-color:transparent;"> <?= htmlspecialchars($question['solution']) ?></pre>
+ </div>
+</div>
+
+<div class="ai-chat" id="ai-chat">
+  <div class="btn-close-hint">
+    <button onclick="closeChat()">X</button>
+  </div>
+  <div id="chat">
+  <div id="messages"></div>
+  <input type="text" id="userInput" placeholder="Ask your doubt..." />
+  <button onclick="sendMessage()">Send</button>
+</div>
 </div>
   
  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>

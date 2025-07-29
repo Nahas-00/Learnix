@@ -38,10 +38,12 @@ const statusTime = document.getElementById('status-time');
 const statusExit = document.getElementById('status-exit');
 const loader = document.getElementById('loader');
 
-const testcaseInput = document.getElementById('testcase-input');
+const testcaseInput = document.getElementById('test-input');
 const tabButtons = document.querySelectorAll('.tab-button');
 const tabPanels = document.querySelectorAll('.tab-panel');
 const outputTabButton = document.querySelector('[data-tab="output"]');
+const testcaseStat = document.getElementById('testcase-status');
+const testcaseOutput = document.getElementById('test-output').textContent.trim();
 
 const languageModes = {
      '50' : 'text/x-csrc',
@@ -146,11 +148,12 @@ function decodeBase64(base64String) {
   }
 }
 
+//Runs to compile the code
 async function runCode() {
   const sourceCode = editor.getValue();
   const languageId = languageSelector.value;
   const stdin = testcaseInput.value;
-
+  
   switchToOutputTab();
 
   outputContent.textContent = '//Executing your code...';
@@ -219,4 +222,64 @@ function processResponse(data){
       outputContent.textContent = '🤔 Unknown response from server.';
       outputContent.className = 'output-content error';
   }
+
+ if (stdOut.trim() === testcaseOutput.trim()) {
+  testcaseStat.innerHTML = `<p class="test-success test-stat"><i class="fas fa-check-circle"></i> Test case Passed</p>`;
+} else {
+  testcaseStat.innerHTML = `<p class="test-fail test-stat"><i class="fas fa-times-circle"></i> One or more Test case Failed</p>`;
+}
+
+}
+
+  const overlay = document.getElementById('overlay-disp');
+  const hint = document.getElementById('hint-disp');
+
+  function showHint(){
+    overlay.style.display = 'block';
+    hint.style.display = 'flex';
+  }
+
+  function closeHint(){
+    overlay.style.display = 'none';
+    hint.style.display = 'none';
+  }
+
+  const sol = document.getElementById('sol-disp');
+  const chat = document.getElementById('ai-chat');
+
+  function showSolution(){
+    const status = confirm('Are you sure. Viewing solution makes the submit fail');
+    if(status){
+    overlay.style.display = 'block';
+    sol.style.display = 'flex';
+    }
+  }
+
+  function closeSolution(){
+    overlay.style.display = 'none';
+    sol.style.display = 'none';
+  }
+
+
+  function openChat(){
+    chat.style.display = 'flex';
+    overlay.style.display = 'block';
+  }
+
+  function closeChat(){
+    chat.style.display = 'none';
+    overlay.style.display = 'none';
+  }
+
+  async function sendMessage() {
+  const input = document.getElementById("userInput").value;
+  const res = await fetch("gemini_chat.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt: input }),
+  });
+  const data = await res.json();
+  document.getElementById("messages").innerHTML +=
+    "<p><strong>You:</strong> " + input + "</p>" +
+    "<p><strong>Learnix AI:</strong> " + data.reply + "</p>";
 }
