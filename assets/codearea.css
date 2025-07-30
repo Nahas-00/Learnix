@@ -17,6 +17,11 @@
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* GLOBAL: apply to entire site */
+
+
+
+
 *{
   margin: 0;
   padding: 0;
@@ -532,7 +537,7 @@ button i{
   max-width: 650px;
   max-height: 580px;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   min-width: 650px;
   min-height: 400px;
 }
@@ -542,6 +547,7 @@ button i{
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  width: 100%;
 }
 
 #messages {
@@ -610,4 +616,40 @@ button i{
 
 #chat button:hover {
   background-color: #0ea472;
+}
+
+#messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+#messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#messages::-webkit-scrollbar-thumb {
+  background-color: var(--primary-light, #8b5cf6);
+  border-radius: 6px;
+}
+
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+body::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+body::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+  background-color: #878787;
+  border-radius: 10px;
+  border: 2px solid var(--dark-1); /* optional padding */
+}
+
+body::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #a78bfa;
 }

@@ -1,3 +1,5 @@
+
+
 const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
   lineNumbers: true,
   mode: 'text/x-c++src',
@@ -148,6 +150,8 @@ function decodeBase64(base64String) {
   }
 }
 
+  let testStatus = 'fail'; 
+
 //Runs to compile the code
 async function runCode() {
   const sourceCode = editor.getValue();
@@ -223,10 +227,14 @@ function processResponse(data){
       outputContent.className = 'output-content error';
   }
 
+
+
  if (stdOut.trim() === testcaseOutput.trim()) {
+  testStatus = 'Succcess'; 
   testcaseStat.innerHTML = `<p class="test-success test-stat"><i class="fas fa-check-circle"></i> Test case Passed</p>`;
 } else {
   testcaseStat.innerHTML = `<p class="test-fail test-stat"><i class="fas fa-times-circle"></i> One or more Test case Failed</p>`;
+  testStatus = 'Failed'; 
 }
 
 }
@@ -250,8 +258,9 @@ function processResponse(data){
   function showSolution(){
     const status = confirm('Are you sure. Viewing solution makes the submit fail');
     if(status){
-    overlay.style.display = 'block';
-    sol.style.display = 'flex';
+      overlay.style.display = 'block';
+      sol.style.display = 'flex';
+      document.getElementById('viewed_solution').value = "1";
     }
   }
 
@@ -323,4 +332,93 @@ function processResponse(data){
     aiBubble.innerText = "⚠️ Error: Could not reach the AI service.";
   }
 }
+
+//submit form
+
+document.getElementById("submit-btn").addEventListener("click", async () => {
+  const code = editor.getValue();
+  const languageId = document.getElementById("language-selector").value;
+  const questionId = document.getElementById('ques_id').value;
+  const usedSolution = document.getElementById("viewed_solution").value;
+  let languageName = 'c++';
+
+  switch (languageId) {
+   case '50':
+      languageName = 'c';      // C
+    case '54':
+      languageName = 'C++'; 
+      break;;    // C++
+    case '62':
+      languageName = 'Java'; 
+      break;     // Java
+    case '71':
+     languageName = 'Python'; 
+      break;;    // Python
+    case '60':
+      languageName = 'Golang'; 
+      break;               // Golang
+    case '72':
+      languageName = 'Ruby'; 
+      break;
+    default:
+      break;
+  }
+
+  const formData = new FormData();
+  formData.append("code", code);
+  formData.append("language_id", languageName);
+  formData.append("question_id", questionId);
+  formData.append("viewed_solution", usedSolution);
+  formData.append("status", testStatus);
+
+  const res = await fetch("submit.php", {
+    method: "POST",
+    body: formData,
+  });
+
+  const result = await res.json();
+ showSubmissionNotice(result.message , 4000);
+});
+
+
+
+
+function showSubmissionNotice(message = "✅ Submission Successful!", timeout = 3000) {
+  const notice = document.createElement("div");
+  notice.textContent = message;
+
+
+
+  // Inline styles
+  Object.assign(notice.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100%",
+    backgroundColor: "#16a34a", // green for success
+    color: "white",
+    textAlign: "center",
+    padding: "0.8rem",
+    fontSize: "1rem",
+    fontFamily: "'Poppins', sans-serif",
+    zIndex: 9999,
+    boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+    opacity: "0",
+    transition: "opacity 0.3s ease"
+  });
+
+  document.body.appendChild(notice);
+
+  // Fade in
+  setTimeout(() => {
+    notice.style.opacity = "1";
+  }, 10);
+
+  // Fade out and remove
+  setTimeout(() => {
+    notice.style.opacity = "0";
+    setTimeout(() => document.body.removeChild(notice), 500);
+  }, timeout);
+}
+
 
