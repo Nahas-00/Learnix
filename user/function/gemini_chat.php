@@ -1,6 +1,10 @@
 <?php
 header('Content-Type: application/json');
 
+    require_once '../../utils/load_env.php';
+    load_env(__DIR__ . '/../../.env');  // adjust if needed
+
+
     $google_api_key = getenv('GOOGLE_API_KEY');
 
 // --- Configuration & Security ---
@@ -30,7 +34,7 @@ if (!isset($data['prompt'])) {
 $prompt = $data['prompt'];
 
 // Block requests for full code
-if (preg_match('/(full code|write a program|complete program|solve this|solution)/i', $prompt)) {
+if (preg_match('/(full code|write a program|complete program|solve this|solution|code snippets)/i', $prompt)) {
     echo json_encode(['reply' => 'Please ask for a concept or a hint, not a full program.']);
     exit;
 }
@@ -43,7 +47,7 @@ $payload = json_encode([
     "contents" => [
         [
             "parts" => [
-                ["text" => "You are a helpful assistant that only gives hints and concept explanations. Do not write full programs.\n\nUser: $prompt"]
+                ["text" => "Imagine you are personal code assistant and You are a helpful assistant that only gives hints and concept explanations. Do not write full programs or explain code snippets. Give a summarised easy to understand and avoid unnecessary systematic\n\nUser: $prompt"]
             ]
         ]
     ]
