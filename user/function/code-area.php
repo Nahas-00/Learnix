@@ -188,11 +188,12 @@ Output: <?= htmlspecialchars($tc['output']) ?>
   <div class="btn-close-hint">
     <button onclick="closeChat()">X</button>
   </div>
-  <div id="chat">
+ <div id="chat">
   <div id="messages"></div>
   <input type="text" id="userInput" placeholder="Ask your doubt..." />
   <button onclick="sendMessage()">Send</button>
 </div>
+
 </div>
   
  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>

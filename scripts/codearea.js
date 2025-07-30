@@ -271,15 +271,56 @@ function processResponse(data){
     overlay.style.display = 'none';
   }
 
-  async function sendMessage() {
-  const input = document.getElementById("userInput").value;
-  const res = await fetch("gemini_chat.php", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt: input }),
-  });
-  const data = await res.json();
-  document.getElementById("messages").innerHTML +=
-    "<p><strong>You:</strong> " + input + "</p>" +
-    "<p><strong>Learnix AI:</strong> " + data.reply + "</p>";
+ async function sendMessage() {
+  const inputBox = document.getElementById("userInput");
+  const userText = inputBox.value.trim();
+  const messages = document.getElementById("messages");
+
+  if (!userText) return;
+
+  // Show user's message
+  const userBubble = document.createElement("div");
+  userBubble.className = "chat-bubble chat-user";
+  userBubble.innerText = userText;
+  messages.appendChild(userBubble);
+  messages.scrollTop = messages.scrollHeight;
+  inputBox.value = "";
+
+  // Add AI thinking bubble (temporary)
+  const aiBubble = document.createElement("div");
+  aiBubble.className = "chat-bubble chat-ai";
+  aiBubble.innerHTML = `<span style = "font-weight:bold;">^_^</span> Typing...`;
+  messages.appendChild(aiBubble);
+  messages.scrollTop = messages.scrollHeight;
+
+  try {
+    const res = await fetch("gemini_chat.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: userText }),
+    });
+
+    const data = await res.json();
+    const reply = data.reply || "No response from AI.";
+
+    // Typing effect
+    aiBubble.innerText = "";
+    let i = 0;
+    const typeSpeed = 20; // milliseconds between characters
+
+    function typeNextChar() {
+      if (i < reply.length) {
+        aiBubble.innerText += reply.charAt(i);
+        i++;
+        messages.scrollTop = messages.scrollHeight;
+        setTimeout(typeNextChar, typeSpeed);
+      }
+    }
+
+    typeNextChar();
+
+  } catch (error) {
+    aiBubble.innerText = "⚠️ Error: Could not reach the AI service.";
+  }
 }
+
