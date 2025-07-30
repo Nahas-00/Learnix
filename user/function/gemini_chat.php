@@ -1,13 +1,15 @@
 <?php
 header('Content-Type: application/json');
 
+    $google_api_key = getenv('GOOGLE_API_KEY');
+
 // --- Configuration & Security ---
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 error_reporting(E_ALL);
 
 // Securely get API key from environment variable
-$apiKey = 'AIzaSyA9O5DOkiJTMGLFJUMY0Xlq7fupDQP9qcE';
+$apiKey = $google_api_key;
 
 if (!$apiKey) {
     http_response_code(500); // Internal Server Error
