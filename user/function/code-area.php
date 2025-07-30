@@ -15,6 +15,8 @@
     echo "Invalid question ID.";
     exit;
   }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -27,12 +29,14 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Space+Grotesk:wght@400;600&display=swap">
     
     <link rel="stylesheet" href="../../assets/codearea.css">
+ 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
   <title>Editor | Learnix</title>
 </head>
 <body>
+
 
 <header>
   <div class="logo">
@@ -41,11 +45,10 @@
   </div>
 
   <div class="controls">
-    <button id="back-btn">
+      <button id="back-btn">
       <a href="../dashboard.php?page=question" style="text-decoration: none; color:white;">
       <i class="bi bi-box-arrow-left"></i> Go Back
-      </a>
-    </button>
+    </button></a>
     <button onclick="openChat()">
       <i class="fa-solid fa-comments"></i>
     </button>
@@ -55,12 +58,14 @@
     <button id="clear-btn">
       <i class="fas fa-broom"></i> Clear
     </button>
-    <button id="submit-btn">
+    <button id="submit-btn" type="submit" name="submit">
       <i class="fa-solid fa-upload"></i> Submit
     </button>
 
   </div>
 </header>
+
+
 
 <div class="container">
   <div class="question-container">
@@ -72,6 +77,7 @@
       <div class="hint-sol-btn">
         <button class="sol-hint-btn" onclick="showHint()">Hint</button>
         <button class="sol-hint-btn"  onclick="showSolution()">Solution</button>
+        <input type="hidden" name="viewed_solution" id="viewed_solution" value="0">
       </div>
     </div>
 
@@ -93,6 +99,8 @@ Output: <?= htmlspecialchars($tc['output']) ?>
        
     </div>
   </div>
+
+          <input type="hidden" id="ques_id" value="<?= htmlspecialchars($qid) ?>">
 
   <div class="right-pane">
     <div class="editor-container">
@@ -204,6 +212,7 @@ Output: <?= htmlspecialchars($tc['output']) ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closebrackets.min.js"></script>
 
-    <script src="../../scripts/codearea.js"></script>
+    <script src="../../scripts/codearea.js" ></script>
+    <script type="module" src="../../scripts/add-user-toast.js"></script>
 </body>
 </html>
