@@ -156,50 +156,57 @@ function decodeBase64(base64String) {
 async function runCode() {
   const sourceCode = editor.getValue();
   const languageId = languageSelector.value;
-  const stdin = testcaseInput.value;
-  
-  switchToOutputTab();
 
-  outputContent.textContent = '//Executing your code...';
+  outputContent.textContent = '// Executing all test cases...';
   outputContent.className = 'output-content';
   loader.style.display = 'block';
+  testcaseStat.innerHTML = '';
 
-  try{
-    const response = await fetch('https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&wait=true',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-RapidAPI-Key':'246a785fafmshc35cc4536659135p1049a1jsnaf9893acd1ba',
-          'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
-        },
-        body: JSON.stringify({
-          source_code: btoa(sourceCode),
-          language_id: parseInt(languageId),
-          stdin: btoa(stdin),
-          cpu_time_limit: 5,
-          memory_limit: 128000
-        })
-      }
-    );
+  let allPassed = true;
+
+  for (let i = 0; i < testcases.length; i++) {
+    const tc = testcases[i];
+    const input = tc.input.trim();
+    const expectedOutput = tc.output.trim();
+
+    const response = await fetch('https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&wait=true', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-RapidAPI-Key': '246a785fafmshc35cc4536659135p1049a1jsnaf9893acd1ba',
+        'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+      },
+      body: JSON.stringify({
+        source_code: btoa(sourceCode),
+        language_id: parseInt(languageId),
+        stdin: btoa(input),
+        cpu_time_limit: 5,
+        memory_limit: 128000
+      })
+    });
 
     const data = await response.json();
-    loader.style.display = 'none';
+    const stdout = decodeBase64(data.stdout || '').trim();
 
-    if(!response.ok){
-      throw new Error(data.error || 'Unknown errror occured');
-    }
+    const pass = stdout === expectedOutput;
+    allPassed = allPassed && pass;
 
-    processResponse(data);
-  }catch(error){
-    loader.style.display = 'none';
-    outputContent.textContent = `Error: ${error.message}\n\nPlease check your code, API key, and try again.`;
-    outputContent.className = 'output-content error';
-    statusMemory.textContent = 'Memory: -';
-    statusTime.textContent = 'Time: -';
-    statusExit.textContent = 'Exit Code: -';
+    const statusHTML = `<div class="${pass ? 'test-success' : 'test-fail'} test-stat">
+      <b>Test ${i + 1}:</b> ${pass ? '✅ Passed' : '❌ Failed'} <br>
+      <b>Input:</b> ${input} <br>
+      <b>Expected:</b> ${expectedOutput} <br>
+      <b>Got:</b> ${stdout}
+    </div>`;
+
+    testcaseStat.innerHTML += statusHTML + '<br>';
   }
+
+  loader.style.display = 'none';
+  testStatus = allPassed ? 'Success' : 'Failed';
+  outputContent.textContent = `🎯 All test cases executed.\nOverall Result: ${testStatus}`;
+  outputContent.className = allPassed ? 'output-content success' : 'output-content error';
 }
+
 
 function processResponse(data){
   statusMemory.textContent = `Memory: ${data.memory ? (data.memory/1024).toFixed(2) + 'MB' : '-'}`;
