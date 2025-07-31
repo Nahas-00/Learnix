@@ -211,6 +211,9 @@ Output: <?= htmlspecialchars($tc['output']) ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/ruby/ruby.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closebrackets.min.js"></script>
+    <script>
+      const testcases = <?= json_encode($testcases) ?>;
+    </script>
 
     <script src="../../scripts/codearea.js" ></script>
     <script type="module" src="../../scripts/add-user-toast.js"></script>
