@@ -178,6 +178,7 @@ button i{
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   min-height: 0;
+  max-height: 350px;
 }
 
 .io-container{
@@ -188,6 +189,7 @@ button i{
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  max-height: 400px;
 }
 
 .io-tabs{

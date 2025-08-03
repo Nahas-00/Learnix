@@ -154,6 +154,7 @@ function decodeBase64(base64String) {
 
 //Runs to compile the code
 async function runCode() {
+  switchToOutputTab();
   const sourceCode = editor.getValue();
   const languageId = languageSelector.value;
 
@@ -169,42 +170,83 @@ async function runCode() {
     const input = tc.input.trim();
     const expectedOutput = tc.output.trim();
 
-    const response = await fetch('https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&wait=true', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-RapidAPI-Key': '246a785fafmshc35cc4536659135p1049a1jsnaf9893acd1ba',
-        'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
-      },
-      body: JSON.stringify({
-        source_code: btoa(sourceCode),
-        language_id: parseInt(languageId),
-        stdin: btoa(input),
-        cpu_time_limit: 5,
-        memory_limit: 128000
-      })
-    });
+    try {
+      const response = await fetch('https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&wait=true', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-RapidAPI-Key': '246a785fafmshc35cc4536659135p1049a1jsnaf9893acd1ba',
+          'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+        },
+        body: JSON.stringify({
+          source_code: btoa(sourceCode),
+          language_id: parseInt(languageId),
+          stdin: btoa(input),
+          cpu_time_limit: 5,
+          memory_limit: 128000
+        })
+      });
 
-    const data = await response.json();
-    const stdout = decodeBase64(data.stdout || '').trim();
+      const data = await response.json();
+      
+      // Process the response
+      const compileOutput = decodeBase64(data.compile_output);
+      const stdErr = decodeBase64(data.stderr);
+      const stdOut = decodeBase64(data.stdout || '').trim();
+      const message = decodeBase64(data.message);
 
-    const pass = stdout === expectedOutput;
-    allPassed = allPassed && pass;
+      // Update status bar
+      statusMemory.textContent = `Memory: ${data.memory ? (data.memory/1024).toFixed(2) + 'MB' : '-'}`;
+      statusTime.textContent = `Time: ${data.time ? (data.time) + 's' : '-'}`;
+      statusExit.textContent = `Exit Code: ${data.status ? (data.status.id) : '-'}`;
 
-    const statusHTML = `<div class="${pass ? 'test-success' : 'test-fail'} test-stat">
-      <b>Test ${i + 1}:</b> ${pass ? '✅ Passed' : '❌ Failed'} <br>
-      <b>Input:</b> ${input} <br>
-      <b>Expected:</b> ${expectedOutput} <br>
-      <b>Got:</b> ${stdout}
-    </div>`;
+      if(i == 0){
+        outputContent.textContent = '';
+      }
 
-    testcaseStat.innerHTML += statusHTML + '<br>';
+      let testOutput = '';
+      let testPassed = false;
+      
+      if (compileOutput) {
+        testOutput = `⚡ Compilation Error:\n${compileOutput}`;
+        outputContent.className = 'output-content error';
+      } else if (stdErr) {
+        testOutput = `🔥 Runtime Error:\n${stdErr}`;
+        outputContent.className = 'output-content error';
+      } else if (message) {
+        testOutput = `❗️ Message:\n${message}`;
+        outputContent.className = 'output-content error';
+      } else {
+        testPassed = stdOut === expectedOutput;
+        testOutput = stdOut;
+        outputContent.className = 'output-content success';
+      }
+
+      const statusHTML = `<div class="${testPassed ? 'test-success' : 'test-fail'} test-stat">
+        <b>Test ${i + 1}:</b> ${testPassed ? '✅ Passed' : '❌ Failed'} <br>
+        <b>Input:</b> ${input} <br>
+        <b>Expected:</b> ${expectedOutput} <br>
+        <b>Got:</b> ${testOutput}
+      </div>`;
+
+      outputContent.innerHTML += statusHTML + '<br>';
+      allPassed = allPassed && testPassed;
+
+    } catch (error) {
+      console.error('Error:', error);
+      outputContent.innerHTML += `<div class="test-fail test-stat">
+        <b>Test ${i + 1}:</b> ❌ Failed (Network/API Error) <br>
+        <b>Error:</b> ${error.message}
+      </div><br>`;
+      allPassed = false;
+      outputContent.className = 'output-content error';
+    }
   }
 
   loader.style.display = 'none';
   testStatus = allPassed ? 'Success' : 'Failed';
-  outputContent.textContent = `🎯 All test cases executed.\nOverall Result: ${testStatus}`;
-  outputContent.className = allPassed ? 'output-content success' : 'output-content error';
+  testcaseStat.textContent = `🎯 All test cases executed.\nOverall Result: ${testStatus}`;
+  testcaseStat.className = allPassed ? 'output-content success' : 'output-content error';
 }
 
 
