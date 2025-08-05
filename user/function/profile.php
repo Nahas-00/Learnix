@@ -1,3 +1,80 @@
+<?php
+  include_once '../../utils/connect.php';
+
+  session_start();
+  $uid = $_SESSION['userid'];
+  $user_stmt = $pdo->prepare("SELECT * FROM users WHERE id= :id");
+  $user_stmt->execute(['id'=>$uid]);
+  $user = $user_stmt->fetch(PDO::FETCH_ASSOC);
+
+  //submission_count
+
+  $stmt = $pdo->prepare("SELECT COUNT(*) AS total_success FROM submission WHERE uid = ? AND result = 'Success'");
+  $stmt->execute([$uid]);
+  $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  $totalSuccess = $row['total_success'];
+
+  //accuracy
+  $sub_stmt = $pdo->prepare("SELECT COUNT(*) AS total FROM submission WHERE uid = ?");
+  $sub_stmt->execute([$uid]);
+  $total_row = $sub_stmt->fetch(PDO::FETCH_ASSOC);
+  $totalSubmission = $total_row['total'];
+
+  $accuracy = ($totalSuccess/$totalSubmission) * 100;
+
+  //last active
+  $stmt = $pdo->prepare("SELECT MAX(timestamp) as last_submit FROM submission WHERE uid = ?");
+  $stmt->execute([$uid]);
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  $lastSubmit = $result['last_submit'];
+
+  if ($lastSubmit) {
+      $formattedDate = date('d M Y', strtotime($lastSubmit));
+  } else {
+      $formattedDate = 'Null';
+  }
+
+  //streak
+
+  $stmt = $pdo->prepare("
+  SELECT DISTINCT DATE(timestamp) AS submit_date
+  FROM submission
+  WHERE uid = ?
+  ORDER BY submit_date DESC
+  ");
+  $stmt->execute([$uid]);
+  $dates = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+  $streak = 0;
+  $today = new DateTime();
+  $expected = clone $today;
+
+  foreach ($dates as $dateStr) {
+      $submitDate = new DateTime($dateStr);
+      
+      if ($submitDate->format('Y-m-d') === $expected->format('Y-m-d')) {
+          $streak++;
+          $expected->modify('-1 day'); // go to previous day
+      } else {
+          break; // streak broken
+      }
+  }
+
+  //recently solved
+
+  $ques_stmt = $pdo->query("SELECT q.title , q.description ,q.difficulty , t.name , s.timestamp FROM question q JOIN topic t on q.topic_id=t.id JOIN submission s on q.id=s.qid WHERE s.result = 'Success' ORDER BY s.timestamp DESC Limit 4");
+ 
+  $question = $ques_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  //achievement display
+
+  $achieve_stmt = $pdo->prepare("SELECT a.icon , a.title FROM achievement a JOIN user_achievement u ON a.id = achievement_id WHERE u.user_id = ? Limit 3");
+  $achieve_stmt->execute([$uid]);
+  $achievement = $achieve_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,19 +110,26 @@
   <section class="profile-header">
     <div class="profile-background"></div>
       <div class="container">
-        <div class="profile-avatar"></div>
+        <div class="profile-avatar">
+          <img src="
+          <?= 
+            !empty($user['profile_pic'])&&file_exists('../../uploads/'.$user['profile_pic'])? '../../uploads/'.$user['profile_pic'] 
+            : '../../uploads/no_profile-user.png' ?>
+          " alt="">
+        </div>
 
         <div class="profile-info">
-          <h1>John Doe</h1>
+          <h1><?= htmlspecialchars($user['username']) ?></h1>
           <div class="profile-username">
-            <span>Email100@gmail.com</span>
+            <span><?= htmlspecialchars($user['email']) ?></span>
             <i class="fas fa-badge-check" style="color: var(--primary);"></i>
+            <button class="edit-btn" onclick="editDetails()"><i class="fa-solid fa-pen-to-square"></i></button>
           </div>
 
           <div class="profile-badges">
             <div class="badge">
               <i class="fas fa-calendar-alt"></i>
-              Last Active: Jan 2023
+              Last Active: <?= htmlspecialchars($formattedDate) ?>
             </div>
 
             <div class="badge">
@@ -57,15 +141,15 @@
 
           <div class="profile-stats">
             <div class="stat-item">
-              <div class="stat-value">124</div>
+              <div class="stat-value"><?= htmlspecialchars($totalSuccess)?></div>
               <div class="stat-label">Problems Solved</div>
             </div>
             <div class="stat-item">
-              <div class="stat-value">92%</div>
+              <div class="stat-value"><?= htmlspecialchars(round($accuracy,2))?>%</div>
               <div class="stat-label">Accuracy</div>
             </div>
             <div class="stat-item">
-              <div class="stat-value">42</div>
+              <div class="stat-value"><?= htmlspecialchars($streak) ?></div>
               <div class="stat-label">Day Streak</div>
             </div>
           </div>
@@ -80,55 +164,50 @@
         <div class="card">
           <div class="card-header">
             <h2>Recently Solved Problems</h2>
-            <a href="">View All</a>
+            <a href="../dashboard.php?page=submission">View All</a>
           </div>
 
           <div class="problems-grid">
+
+          <?php foreach($question as $ques): ?>
             <div class="problem-card">
               <div class="problem-header">
-                <h3 class="problem-title">Two Sum</h3>
-                <span class="problem-difficulty difficulty-easy">Easy</span>
+                <h3 class="problem-title"><?= htmlspecialchars(ucwords($ques['title'])) ?></h3>
+                <span class="problem-difficulty difficulty-<?= htmlspecialchars(strtolower($ques['difficulty'])) ?>"><?= htmlspecialchars(($ques['difficulty'])) ?></span>
                 </div>
                 <div class="problem-meta">
-                  <span>Array , Hash table</span>
-                  <span>Solved: 2 Days ago</span>
+                  <span><?= htmlspecialchars(ucwords($ques['name'])) ?></span>
+                  <?php
+                    $submitDate = new DateTime($ques['timestamp']);
+                    $now = new DateTime();
+                    $diff = $now->diff($submitDate);
+
+                    if ($diff->y > 0) {
+                        $ago = $diff->y . ' year' . ($diff->y > 1 ? 's' : '') . ' ago';
+                    } elseif ($diff->m > 0) {
+                        $ago = $diff->m . ' month' . ($diff->m > 1 ? 's' : '') . ' ago';
+                    } elseif ($diff->d > 0) {
+                        $ago = $diff->d . ' day' . ($diff->d > 1 ? 's' : '') . ' ago';
+                    } elseif ($diff->h > 0) {
+                        $ago = $diff->h . ' hour' . ($diff->h > 1 ? 's' : '') . ' ago';
+                    } elseif ($diff->i > 0) {
+                        $ago = $diff->i . ' minute' . ($diff->i > 1 ? 's' : '') . ' ago';
+                    } else {
+                        $ago = 'just now';
+                    }
+                  ?>
+                  <span>Solved: <?= $ago ?></span>
+
+                 
                 </div>
-                <p class="problem-description">Find indices of the two numbers such that they add up to target.</p>
+                <p class="problem-description"><?= htmlspecialchars(mb_strimwidth($ques['description'], 0, 80, '...')) ?>.</p>
                 <div class="problem-footer">
                     <button class="btn btn-outline">View Solution</button>
               </div>
             </div>
+            <?php endforeach; ?>
 
-            <div class="problem-card">
-              <div class="problem-header">
-                <h3 class="problem-title">Two Sum</h3>
-                <span class="problem-difficulty difficulty-easy">Easy</span>
-                </div>
-                <div class="problem-meta">
-                  <span>Array , Hash table</span>
-                  <span>Solved: 2 Days ago</span>
-                </div>
-                <p class="problem-description">Find indices of the two numbers such that they add up to target.</p>
-                <div class="problem-footer">
-                    <button class="btn btn-outline">View Solution</button>
-              </div>
-            </div>
-
-            <div class="problem-card">
-              <div class="problem-header">
-                <h3 class="problem-title">Two Sum</h3>
-                <span class="problem-difficulty difficulty-easy">Easy</span>
-                </div>
-                <div class="problem-meta">
-                  <span>Array , Hash table</span>
-                  <span>Solved: 2 Days ago</span>
-                </div>
-                <p class="problem-description">Find indices of the two numbers such that they add up to target.</p>
-                <div class="problem-footer">
-                    <button class="btn btn-outline">View Solution</button>
-              </div>
-            </div>
-
+           
           </div>
         </div>
       </div>
@@ -136,33 +215,70 @@
       <div class="right-column">
         
       <div class="card">
+        <div class="card-header">
         <h2>Achievements</h2>
-        <a href="">View All</a>
+        <button class="achieve-btn"> View All</button>
       </div>
 
+      <?php foreach($achievement as $ac): ?>
       <div class="achievements-grid">
         <div class="achievement-item">
           <div class="achievement-icon">
-              <i class="fas fa-fire"></i>
+              <i class="<?= htmlspecialchars($ac['icon']) ?>"></i>
           </div>
-          <div class="achievement-title">30-Day Streak</div>
+          <div class="achievement-title"><?= htmlspecialchars($ac['title']) ?></div>
+      </div>
+      <?php endforeach ?>
+
+       </div>
       </div>
 
-      <div class="achievement-item">
-          <div class="achievement-icon">
-              <i class="fas fa-fire"></i>
-          </div>
-          <div class="achievement-title">30-Day Streak</div>
-      </div>
+    </div>
+  </div>
 
-      <div class="achievement-item">
-          <div class="achievement-icon">
-              <i class="fas fa-fire"></i>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+
+  <div class="edit-tab" id="edit-div">
+    <div class="title">
+      <h1>Profile Update</h1>
+    </div>
+
+    <div class="edit-details">
+      <form action="" method="post">
+        <div class="username-field">
+          <i class="fa-solid fa-user"></i>
+          <span>Current: <?= htmlspecialchars($user['username']) ?></span>
+          <input type="text" placeholder="Enter new username" name="useranme">
+        </div>
+
+        <div class="password-field">
+          <i class="fa-solid fa-key"></i>
+          <span>New Password</span>
+          <input type="password" name="password" placeholder="Enter new password">
+        </div>
+
+        <div class="password-field">
+          <i class="fa-solid fa-key"></i>
+          <span>Re-Enter Password</span>
+          <input type="password" name="password" placeholder="Re-enter new password">
+        </div>
+        <div class="update-btn-field">
+          <button type="submit" name="submit" class="update-btn">Update</button>
+        </div>
+
+        <div class="dp-field">
+          <div class="input-dp">
+            <label for="photoUpload" class="upload-btn">📤 Upload New Photo</label>
+            <input type="file" id="photoUpload" accept="image/*" style="display: none;">
           </div>
-          <div class="achievement-title">30-Day Streak</div>
-      </div>
-      </div>
-      </div>
+
+          <div class="dp-display">
+
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -179,6 +295,9 @@
                 icon.style.transform = 'scale(1)';
             });
         });
+        
   </script>
+
+  <script src="../../scripts/edit-user-info.js"></script>
 </body>
 </html>
