@@ -7,6 +7,88 @@
   $user_stmt->execute(['id'=>$uid]);
   $user = $user_stmt->fetch(PDO::FETCH_ASSOC);
 
+  //update details
+  if(isset($_POST['submit'])){
+    $username = $_POST['username'] ?? $user['username'];
+    $pass = $_POST['password'] ?? '';
+    $confPass = $_POST['confirmPassword'];
+    $file = $_FILES['profile_pic'] ?? $user['profile_pic'];
+    $filename = $user['profile_pic']; 
+
+
+    if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] === UPLOAD_ERR_OK) {
+        $file = $_FILES['profile_pic'];
+        $allowed = ['image/jpeg', 'image/png', 'image/webp' , 'image/jpg'];
+
+        if (!in_array($file['type'], $allowed)) {
+            $msg = 'Invalid image type.';
+            $title = 'Warning';
+        } else {
+            $originalName = basename($file['name']);
+            $destination = '../../uploads/'. $originalName;
+
+            if (move_uploaded_file($file['tmp_name'], $destination)) {
+                if ($user['profile_pic'] && file_exists('../../uploads/' . $user['profile_pic'])) {
+                    unlink('../../uploads/' . $user['profile_pic']);
+                }
+                $filename = $originalName;
+            } else {
+                $msg = "Failed to move uploaded file.";
+                $title = 'Error';
+            }
+        }
+    }
+      
+
+    if($pass !== ''){
+
+      if($pass != $confPass){
+        $msg = "Password doesnt match";
+        $title= 'Error';
+    }else if(strlen($pass)< 5){
+        $msg= "Password must be at least 5 characters";
+        $title= 'Warning';
+    }else if(!preg_match('/[0-9]/' , $pass)){
+        $msg= "Password must contain atleast 1 number";
+        $title= 'Warning';
+    }else{
+        $stmt = $pdo->prepare("select *from users where username= :username");
+        $stmt->execute(['username'=>$username]);
+        $user_name=$stmt->fetch();
+
+        if($user_name['username'] && $user_name['id']!=$uid){
+            $msg="Username already taken.";
+            $title= 'warning';
+        }else{
+        $hash_pass = password_hash($pass,PASSWORD_DEFAULT);
+        $stmt = $pdo->prepare("UPDATE users SET username = ?, password = ?, profile_pic = ? WHERE id = ?");
+        $stmt->execute([$username, $hash_pass, $filename, $uid]);
+        $msg = "Profile updated successfully.";
+        $title = 'Success';
+        
+        // Re-fetch updated user data to reflect new image
+        $user_stmt = $pdo->prepare("SELECT * FROM users WHERE id= :id");
+        $user_stmt->execute(['id' => $uid]);
+        $user = $user_stmt->fetch(PDO::FETCH_ASSOC);
+
+    }
+
+    }
+
+  }else{
+     $stmt = $pdo->prepare("UPDATE users SET username = ?, profile_pic = ? WHERE id = ?");
+     $stmt->execute([$username, $filename, $uid]);
+     $msg = "Profile updated successfully.";
+     $title = 'Success';
+
+     // Re-fetch updated user data to reflect new image
+    $user_stmt = $pdo->prepare("SELECT * FROM users WHERE id= :id");
+    $user_stmt->execute(['id' => $uid]);
+    $user = $user_stmt->fetch(PDO::FETCH_ASSOC);
+
+  }
+}
+
   //submission_count
 
   $stmt = $pdo->prepare("SELECT COUNT(*) AS total_success FROM submission WHERE uid = ? AND result = 'Success'");
@@ -82,11 +164,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User | Profile</title>
   <link rel="icon" href="../../assets/images/web_icon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles/toast.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/profile.css">
 </head>
 <body>
+
+<div class="notification"></div>
   <!--Header-->
   <header>
     <div class="container">
@@ -99,8 +184,8 @@
         </div>
 
             <div class="nav-links">
-                <a href="#">Logout</a>
-                <a href="#">Dashboard</a>
+                <a href="../../auth/logout.php">Logout</a>
+                <a href="../dashboard.php">Dashboard</a>
             </div>
       </nav>
     </div>
@@ -247,12 +332,12 @@
     </div>
 
     <div class="edit-details">
-      <form action="" method="post">
+      <form action="" method="post" enctype="multipart/form-data">
         <div class="username-field">
           <div><i class="fa-solid fa-user"></i>
           <span>Current Username: <span style="color: rgba(170, 139, 255, 1);"><?= htmlspecialchars($user['username']) ?></span></span>
           </div>
-          <input type="text" placeholder="Enter new username" name="useranme">
+          <input type="text" placeholder="Enter new username" name="username">
         </div>
 
         <div class="password-field">
@@ -273,12 +358,15 @@
           <div class="input-dp">
             <div>
             <label for="photoUpload" class="upload-btn">📤 Upload New Photo</label>
-            <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+            <input type="file" id="photoUpload" name="profile_pic" accept="image/*" style="display: none;">
             </div>
           </div>
 
           <div class="dp-display">
-            <img src="../../uploads/luffy.jpg" alt="">
+            <img src="
+            <?=!empty($user['profile_pic'])&&file_exists('../../uploads/'.$user['profile_pic'])? '../../uploads/'.$user['profile_pic'] 
+            : '../../uploads/no_profile-user.png' ?>
+            " alt="">
           </div>
         </div>
 
@@ -307,6 +395,14 @@
         
   </script>
 
+    <script>
+    window.toastMsgData = {
+        title: <?= json_encode($title) ?> ,
+        msg : <?= json_encode($msg) ?> 
+    }
+  </script>
+
   <script src="../../scripts/edit-user-info.js"></script>
+  <script type="module" src="../../scripts/add-user-toast.js"></script>
 </body>
 </html>
