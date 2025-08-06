@@ -449,7 +449,6 @@ nav{
   max-height: 550px;
   padding: 1rem;
   flex-direction: column;
-
   background: var(--dark-2);
   backdrop-filter: blur(10px);
 }
