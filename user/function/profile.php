@@ -243,41 +243,50 @@
   <div class="edit-tab" id="edit-div">
     <div class="title">
       <h1>Profile Update</h1>
+      <button onclick="closeField()"><i class="fa-solid fa-circle-xmark"></i></button>
     </div>
 
     <div class="edit-details">
       <form action="" method="post">
         <div class="username-field">
-          <i class="fa-solid fa-user"></i>
-          <span>Current: <?= htmlspecialchars($user['username']) ?></span>
+          <div><i class="fa-solid fa-user"></i>
+          <span>Current Username: <span style="color: rgba(170, 139, 255, 1);"><?= htmlspecialchars($user['username']) ?></span></span>
+          </div>
           <input type="text" placeholder="Enter new username" name="useranme">
         </div>
 
         <div class="password-field">
-          <i class="fa-solid fa-key"></i>
+          <div><i class="fa-solid fa-key"></i>
           <span>New Password</span>
+          </div>
           <input type="password" name="password" placeholder="Enter new password">
         </div>
 
         <div class="password-field">
-          <i class="fa-solid fa-key"></i>
+          <div><i class="fa-solid fa-key"></i>
           <span>Re-Enter Password</span>
-          <input type="password" name="password" placeholder="Re-enter new password">
-        </div>
-        <div class="update-btn-field">
-          <button type="submit" name="submit" class="update-btn">Update</button>
+          </div>
+          <input type="password" name="confirmPassword" placeholder="Re-enter new password">
         </div>
 
         <div class="dp-field">
           <div class="input-dp">
+            <div>
             <label for="photoUpload" class="upload-btn">📤 Upload New Photo</label>
             <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+            </div>
           </div>
 
           <div class="dp-display">
-
+            <img src="../../uploads/luffy.jpg" alt="">
           </div>
         </div>
+
+
+          <div class="update-btn-field">
+          <button type="submit" name="submit" class="update-btn">Update</button>
+        </div>
+
       </form>
     </div>
   </div>
