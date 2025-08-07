@@ -9,7 +9,7 @@
 
   //update details
   if(isset($_POST['submit'])){
-    $username = $_POST['username'] ?? $user['username'];
+    $username =  !empty($_POST['username']) ? $_POST['username'] : $user['username'];
     $pass = $_POST['password'] ?? '';
     $confPass = $_POST['confirmPassword'];
     $file = $_FILES['profile_pic'] ?? $user['profile_pic'];
@@ -25,12 +25,12 @@
             $title = 'Warning';
         } else {
             $originalName = basename($file['name']);
-            $destination = '../../uploads/'. $originalName;
+            $destination = '../../uploads/'.$originalName;
 
             if (move_uploaded_file($file['tmp_name'], $destination)) {
-                if ($user['profile_pic'] && file_exists('../../uploads/' . $user['profile_pic'])) {
-                    unlink('../../uploads/' . $user['profile_pic']);
-                }
+               if ($user['profile_pic'] && $user['profile_pic'] !== $originalName && file_exists('../../uploads/' . $user['profile_pic'])) {
+                  unlink('../../uploads/' . $user['profile_pic']);
+              }
                 $filename = $originalName;
             } else {
                 $msg = "Failed to move uploaded file.";
