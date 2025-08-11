@@ -14,7 +14,7 @@
     $stmt = $pdo->prepare("SELECT q.id as ques_id,q.title,q.difficulty,q.solution,q.description,q.hint,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id WHERE q.title LIKE :title ORDER BY q.id DESC");
     $stmt->execute(['title'=>'%'.$search.'%']);
   }else{
-    $stmt = $pdo->prepare("SELECT q.id as ques_id,q.title,q.difficulty,q.solution,q.description,q.hint,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id WHERE q.id NOT IN (SELECT qid FROM submission WHERE uid = ?) ORDER BY q.id DESC");
+    $stmt = $pdo->prepare("SELECT q.id as ques_id,q.title,q.difficulty,q.solution,q.description,q.hint,t.name,c.name as cat_name FROM question q JOIN topic t ON q.topic_id = t.id JOIN category c ON c.id = q.category_id WHERE q.id NOT IN (SELECT qid FROM submission WHERE uid = ? AND result = 'Success') ORDER BY q.id DESC");
     $stmt->execute([$id]);
   }
   $question = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -1,7 +1,24 @@
 
 <?php
 require_once '../auth/auth_validate.php';
+include_once '../utils/connect.php';
 
+  $uid = $_SESSION['userid'];
+
+  $stmt = $pdo->prepare("SELECT q.*
+    FROM question q
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM submission s
+        WHERE s.qid = q.id
+          AND s.uid = :userid
+          AND s.result = 'Success'
+    );
+ ");
+
+ $stmt->execute([':userid' => $uid]);
+
+ $ques = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -39,6 +56,13 @@ require_once '../auth/auth_validate.php';
             <i class="fa-solid fa-code nav-icon"></i>
             Submissions
           </a>
+
+          <?php if(!$ques): ?>
+          <a href="?page=certificate" class="nav-item">
+            <i class="fa-solid fa-graduation-cap"></i>
+            Certificate
+          </a>
+        <?php endif;?>
         
       </div>
   </div>
@@ -50,11 +74,10 @@ require_once '../auth/auth_validate.php';
       if(isset($_GET['page'])){
         $page = $_GET['page'];
 
-        $allowed = ['home', 'question','submission'];
+        $allowed = ['home', 'question','submission', 'certificate'];
 
         if(in_array($page,$allowed)&&file_exists($page.".php")){
-          if($page === 'add-achievement' ){include 'functions/add-achievement.php';}else{
-        include $page.".php";}
+         include $page.".php";
         }else{
           echo "<div class=not-found>Error 404 ! <br> Page not found</div>";
         }

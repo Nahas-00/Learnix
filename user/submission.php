@@ -104,7 +104,7 @@
           <option value="">All Languages</option>
           <option value="python">Python</option>
           <option value="c">C</option>
-          <option value="cpp">C++</option>
+          <option value="c++">C++</option>
           <option value="java">Java</option>
           <option value="ruby">Ruby</option>
           <option value="golang">Golang</option>
@@ -113,7 +113,7 @@
         <select name="result" id="" class="result">
           <option value="">All Result</option>
           <option value="success">Success</option>
-          <option value="fail">Fail</option>
+          <option value="failed">Fail</option>
         </select>
 
         <input type="date" name="specific_date" class="date-field" value="<?= htmlspecialchars($_GET['specific_date'] ?? '') ?>">

@@ -102,8 +102,11 @@
   $sub_stmt->execute([$uid]);
   $total_row = $sub_stmt->fetch(PDO::FETCH_ASSOC);
   $totalSubmission = $total_row['total'];
-
+  if($totalSubmission != 0){
   $accuracy = ($totalSuccess/$totalSubmission) * 100;
+  }else{
+    $accuracy = 0;
+  }
 
   //last active
   $stmt = $pdo->prepare("SELECT MAX(timestamp) as last_submit FROM submission WHERE uid = ?");
@@ -145,7 +148,7 @@
 
   //recently solved
 
-  $ques_stmt = $pdo->query("SELECT q.title , q.description ,q.difficulty , t.name , s.timestamp FROM question q JOIN topic t on q.topic_id=t.id JOIN submission s on q.id=s.qid WHERE s.result = 'Success' ORDER BY s.timestamp DESC Limit 4");
+  $ques_stmt = $pdo->query("SELECT q.title , q.description ,q.difficulty , t.name ,s.code, s.timestamp FROM question q JOIN topic t on q.topic_id=t.id JOIN submission s on q.id=s.qid WHERE s.result = 'Success' ORDER BY s.timestamp DESC Limit 4");
  
   $question = $ques_stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -287,7 +290,7 @@
                 </div>
                 <p class="problem-description"><?= htmlspecialchars(mb_strimwidth($ques['description'], 0, 80, '...')) ?>.</p>
                 <div class="problem-footer">
-                    <button class="btn btn-outline">View Solution</button>
+                    <button class="btn btn-outline" onclick="showSolution(this)" data-code="<?= htmlspecialchars($ques['code']) ?>">View Solution</button>
               </div>
             </div>
             <?php endforeach; ?>
@@ -378,6 +381,19 @@
       </form>
     </div>
   </div>
+
+      <!--View Solution-->
+      <div class="view-solution" id="view-solution">
+        <div class="header-sol">
+          <h2>Solution</h2>
+          <button onclick="closeSolution()">X</button>
+        </div>
+        <div>
+          <pre><p id="code-dis">
+
+          </p></pre>
+        </div>
+      </div>
 
   <script>
      document.querySelectorAll('.achievement-item').forEach(item => {

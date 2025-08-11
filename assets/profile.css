@@ -595,3 +595,47 @@ nav{
   border-radius: 50%;
 }
 
+.view-solution{
+  width: 480px;
+  max-height: 550px;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 1232;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  display: none;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1rem;
+  background-color: var(--dark-3);
+}
+
+.header-sol{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.header-sol h1{
+  font-size: 1.2rem;
+  color: var(--light-1);
+  font-weight: 500;
+}
+
+.header-sol button{
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #ef4444;
+  color: var(--light-2);
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid black;
+}
+
+#code-dis{
+  font-size: 0.98rem;
+}

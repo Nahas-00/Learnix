@@ -1,3 +1,4 @@
+
 function editDetails(){
   const overlay = document.getElementById('overlay');
   const div = document.getElementById('edit-div');
@@ -27,3 +28,25 @@ function closeField(){
       reader.readAsDataURL(file);
     }
   });
+
+  function showSolution(button){
+    const overlay = document.getElementById('overlay');
+    const div = document.getElementById('view-solution');
+    overlay.style.display = 'block';
+    div.style.display = 'flex';
+    const area = document.getElementById('code-dis');
+    area.textContent = button.dataset.code;
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' 
+    });
+  }
+
+  function closeSolution(){
+    const overlay = document.getElementById('overlay');
+    const div = document.getElementById('view-solution');
+    overlay.style.display = 'none';
+    div.style.display = 'none';
+  }
+
+  
