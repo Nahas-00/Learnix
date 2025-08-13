@@ -1,0 +1,42 @@
+:root {
+  --primary: #7c3aed;
+  --primary-light: #8b5cf6;
+  --primary-dark: #6d28d9;
+  --secondary: #a78bfa;
+  --accent: #f59e0b;
+  --dark-1: #0f172a;
+  --dark-2: #1e293b;
+  --dark-3: #334155;
+  --light-1: #f8fafc;
+  --light-2: #e2e8f0;
+  --light-3: #94a3b8;
+  --success: #10b981;
+  --card-border: rgba(100, 116, 139, 0.2);
+  --danger: #ef4444;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.name-field{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 0.78rem;
+    padding: 1rem;
+    width: 100%;
+    gap: 0.67rem;
+}
+
+.name-field input{
+    width: 100%;
+    padding: 0.6rem;
+}
+
+.name-field .btn{
+    width: 120px;
+    height: 38px;
+    background-color: var(--primary);
+    color: white;
+}
