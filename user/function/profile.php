@@ -148,8 +148,8 @@
 
   //recently solved
 
-  $ques_stmt = $pdo->query("SELECT q.title , q.description ,q.difficulty , t.name ,s.code, s.timestamp FROM question q JOIN topic t on q.topic_id=t.id JOIN submission s on q.id=s.qid WHERE s.result = 'Success' ORDER BY s.timestamp DESC Limit 4");
- 
+  $ques_stmt = $pdo->prepare("SELECT q.title , q.description ,q.difficulty , t.name ,s.code, s.timestamp FROM question q JOIN topic t on q.topic_id=t.id JOIN submission s on q.id=s.qid WHERE s.result = 'Success' AND s.uid = :user_id  ORDER BY s.timestamp DESC Limit 4");
+  $ques_stmt->execute(['user_id' => $uid]);
   $question = $ques_stmt->fetchAll(PDO::FETCH_ASSOC);
 
   //achievement display
