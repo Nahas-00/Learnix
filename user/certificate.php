@@ -1,8 +1,13 @@
 <?php
   include '../utils/connect.php';
+  try{
+    session_start();
+  }catch(error){
+    
+  }
 
+    $user_id = $_SESSION['userid'];
 
-  $user_id = $_SESSION['userid'];
   if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajax'])){
     $name=trim($_POST['name']);
     if(!empty($name)){
@@ -32,6 +37,21 @@
 $stmt = $pdo->prepare("SELECT * FROM certificate WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $certificate = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare("SELECT q.*
+    FROM question q
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM submission s
+        WHERE s.qid = q.id
+          AND s.uid = :userid
+          AND s.result = 'Success'
+    );
+ ");
+
+  $stmt->execute([':userid' => $user_id]);
+
+  $ques = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -40,11 +60,17 @@ $certificate = $stmt->fetch(PDO::FETCH_ASSOC);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>certificate</title>
-  <link rel="stylesheet" href="../assets/admin_dash.css">
+  <link rel="stylesheet" href="../assets/user_dash.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
   <link rel="stylesheet" href="../assets/certificate.css">
 </head>
 <body>
+
+  <?php if(!$ques): ?>
+    <div class="no-cert">
+      <h1>You are not eligible for certifictae</h1>
+    </div>
+    <?php else: ?>
 
     <?php if(!$certificate): ?>
     <div class="name-field">
@@ -58,7 +84,8 @@ $certificate = $stmt->fetch(PDO::FETCH_ASSOC);
       </form>
     </div>
     <?php else: ?>
-      <div class="certContainer" id="certContainer">
+      <div class="scroll-wrapper">
+      <div class="certContainer" id="certContainer" >
         <div class="corner corner-tl"></div>
         <div class="corner corner-tr"></div>
         <div class="corner corner-bl"></div>
@@ -100,8 +127,11 @@ $certificate = $stmt->fetch(PDO::FETCH_ASSOC);
             </div>
         </div>
     </div>
+    </div>
       
       <button id="downloadBtn">Download Certificate</button>
+    <?php endif; ?>
+
     <?php endif; ?>
 
     <div class="no-use"></div>
@@ -128,21 +158,30 @@ $certificate = $stmt->fetch(PDO::FETCH_ASSOC);
           document.getElementById('certContainer').innerHTML = html;
         });
       });
+      
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
+
       document.getElementById('downloadBtn')?.addEventListener('click', () => {
           
         const cert = document.getElementById('certContainer');
+        const originalClass = cert.className;
+
+        cert.className = "fixed-size";
           html2canvas(cert).then(canvas => {
               const link = document.createElement('a');
               link.download = 'certificate.png';
               link.href = canvas.toDataURL('image/png');
               link.click();
+
+               cert.className = originalClass;
           });
       });
+
+     
     </script>
 
 </body>

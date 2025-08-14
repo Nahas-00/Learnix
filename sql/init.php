@@ -115,6 +115,7 @@ try {
         CREATE TABLE IF NOT EXISTS certificate (
             id INT AUTO_INCREMENT PRIMARY KEY,
             user_id INT NOT NULL,
+            name VARCHAR(80),
             issue_date DATE DEFAULT CURRENT_DATE,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
