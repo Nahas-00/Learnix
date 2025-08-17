@@ -48,13 +48,20 @@ include_once '../utils/connect.php';
             <i class="fa-solid fa-gauge-high nav-icon"></i>
             Dashboard
           </a>
+
           <a href="?page=question" class="nav-item">
             <i class="fa-solid fa-laptop-code nav-icon"></i>
             Questions
           </a>
+
           <a href="?page=submission" class="nav-item">
             <i class="fa-solid fa-code nav-icon"></i>
             Submissions
+          </a>
+
+          <a href="?page=leaderboard" class="nav-item">
+            <i class="fa-solid fa-trophy"></i>
+            LeaderBoard
           </a>
 
           <?php if(!$ques): ?>
@@ -74,7 +81,7 @@ include_once '../utils/connect.php';
       if(isset($_GET['page'])){
         $page = $_GET['page'];
 
-        $allowed = ['home', 'question','submission', 'certificate'];
+        $allowed = ['home', 'question','submission', 'certificate', 'leaderboard'];
 
         if(in_array($page,$allowed)&&file_exists($page.".php")){
          include $page.".php";

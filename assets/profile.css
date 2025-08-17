@@ -593,51 +593,192 @@ nav{
   width: 100%;
   height: 100%;
   border-radius: 50%;
-}
 
-.view-solution{
-  max-width: 480px;
+
+/*Solution*/}
+
+.view-solution {
+  width: 90%;
+  max-width: 700px;
   max-height: 80vh;
-  overflow: auto;
+  overflow-y: auto;
   position: fixed;
   z-index: 1229;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   display: none;
-  justify-content: center;
   flex-direction: column;
-  padding: 1rem;
-  background-color: var(--dark-3);
+  background-color: var(--dark-2);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--card-border);
+  animation: fadeInScale 0.25s ease;
 }
 
-.header-sol{
+@keyframes fadeInScale {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.header-sol {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 0.7rem;
-  width: 100%;
-  height: 75px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--card-border);
+  background: var(--dark-3);
 }
 
-.header-sol h1{
+.header-sol h2 {
   font-size: 1.2rem;
-  color: var(--light-1);
+  color: var(--primary);
   font-weight: 500;
+  box-shadow: 0 0 7px rgba(129, 37, 235, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.header-sol button{
-  width: 35px;
-  height: 35px;
+.header-sol button {
+  width: 32px;
+  height: 32px;
+  background-color: var(--danger);
+  border: none;
+  color: var(--light-1);
+  font-size: 1.3rem;
   border-radius: 50%;
-  background-color: #ef4444;
-  color: var(--light-2);
-  font-weight: 600;
   cursor: pointer;
-  border: 1px solid black;
+  transition: var(--transition);
 }
 
-#code-dis{
-  font-size: 0.98rem;
+.header-sol button:hover {
+  background-color: #dc2626;
 }
+
+.solution-body {
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.solution-body pre {
+  background: var(--dark-1);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--light-2);
+  border: 1px solid var(--card-border);
+}
+
+/* Scrollbar styling */
+.solution-body pre::-webkit-scrollbar {
+  height: 8px;
+}
+.solution-body pre::-webkit-scrollbar-thumb {
+  background-color: var(--dark-3);
+  border-radius: 4px;
+}
+
+
+/*Achievement*/
+
+.view-achievements {
+  width: 90%;
+  max-width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: fixed;
+  z-index: 1230;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  flex-direction: column;
+  background-color: var(--dark-2);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--card-border);
+  animation: fadeInScale 0.25s ease;
+}
+
+.header-achieve {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--card-border);
+  background: var(--dark-3);
+}
+
+.header-achieve h2 {
+  font-size: 1.2rem;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-achieve button {
+  width: 32px;
+  height: 32px;
+  background-color: var(--danger);
+  border: none;
+  color: var(--light-1);
+  font-size: 1.3rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.header-achieve button:hover {
+  background-color: #dc2626;
+}
+
+.achievements-list {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.achievement-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--dark-1);
+  padding: 12px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--card-border);
+  transition: var(--transition);
+}
+
+.achievement-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.achievement-icon-large {
+  width: 50px;
+  height: 50px;
+  background: rgba(37, 99, 235, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: var(--accent);
+}
+
+.achievement-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--light-1);
+}
+
+.achievement-info p {
+  font-size: 0.85rem;
+  color: var(--light-3);
+}
+

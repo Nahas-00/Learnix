@@ -49,4 +49,19 @@ function closeField(){
     div.style.display = 'none';
   }
 
+
+  document.querySelector('.achieve-btn').addEventListener('click', () => {
+  document.getElementById('overlay').style.display = 'block';
+  document.getElementById('view-achievements').style.display = 'flex';
+      window.scrollTo({
+      top: 0,
+      behavior: 'smooth' 
+    });
+});
+
+function closeAchievements() {
+  document.getElementById('overlay').style.display = 'none';
+  document.getElementById('view-achievements').style.display = 'none';
+}
+
   

@@ -43,7 +43,7 @@ $most_attempted_stmt = $pdo->prepare("
     FROM question q 
     JOIN topic t ON q.topic_id = t.id
     WHERE q.id NOT IN (
-        SELECT qid FROM submission WHERE uid = :userid
+        SELECT qid FROM submission WHERE uid = :userid and result = 'Success'
     )
     LIMIT 3
 ");

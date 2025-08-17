@@ -1,11 +1,43 @@
 <?php
   include_once '../../utils/connect.php';
+  include 'assign_achievement.php';
 
-  session_start();
+
   $uid = $_SESSION['userid'];
   $user_stmt = $pdo->prepare("SELECT * FROM users WHERE id= :id");
   $user_stmt->execute(['id'=>$uid]);
   $user = $user_stmt->fetch(PDO::FETCH_ASSOC);
+
+  //level detector
+  // total points for a user
+  $stmt = $pdo->prepare("
+      SELECT 
+          SUM(
+              CASE 
+                  WHEN q.difficulty = 'Easy' THEN 10
+                  WHEN q.difficulty = 'Medium' THEN 20
+                  WHEN q.difficulty = 'Hard' THEN 40
+              END
+          ) AS problem_points
+      FROM submission s
+      JOIN question q ON s.qid = q.id
+      WHERE s.uid = :uid AND s.result = 'Success'
+  ");
+  $stmt->execute(['uid' => $uid]);
+  $points = $stmt->fetchColumn();
+
+  // now assign level
+  if ($points < 160) {
+      $level = "Beginner";
+  } elseif ($points < 380) {
+      $level = "Intermediate";
+  } elseif ($points < 610) {
+      $level = "Expert";
+  } else {
+      $level = "Master";
+  }
+
+
 
   //update details
   if(isset($_POST['submit'])){
@@ -158,6 +190,16 @@
   $achieve_stmt->execute([$uid]);
   $achievement = $achieve_stmt->fetchAll(PDO::FETCH_ASSOC);
 
+  $sql = "SELECT a.title, a.description, a.icon, ua.date_earned
+        FROM user_achievement ua
+        JOIN achievement a ON ua.achievement_id = a.id
+        WHERE ua.user_id = :uid
+        ORDER BY ua.date_earned DESC";
+
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute(['uid' => $uid]);
+  $all_achievements = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -171,6 +213,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/profile.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap/cal-heatmap.css">
+<script src="https://cdn.jsdelivr.net/npm/cal-heatmap/dist/cal-heatmap.min.js"></script>
 </head>
 <body>
 
@@ -221,8 +266,8 @@
             </div>
 
             <div class="badge">
-           <i class="fas fa-graduation-cap"></i>
-            Computer Science
+            <i class="fa-solid fa-medal"></i>
+            <?= htmlspecialchars(ucfirst($level)) ?>
             </div>
             
           </div>
@@ -326,6 +371,8 @@
 
   </div>
 
+      <!--Edit tab-->
+
   <div class="overlay" id="overlay"></div>
 
   <div class="edit-tab" id="edit-div">
@@ -385,15 +432,36 @@
       <!--View Solution-->
       <div class="view-solution" id="view-solution">
         <div class="header-sol">
-          <h2>Solution</h2>
-          <button onclick="closeSolution()">X</button>
+          <h2><i class="fa-solid fa-code"></i> Solution</h2>
+          <button onclick="closeSolution()" title="Close">&times;</button>
         </div>
-        <div>
-          <pre><p id="code-dis">
-
-          </p></pre>
+        <div class="solution-body">
+          <pre><code id="code-dis" class="language-php"></code></pre>
         </div>
       </div>
+
+      <!-- View All Achievements Modal -->
+    <div class="view-achievements" id="view-achievements">
+      <div class="header-achieve">
+        <h2><i class="fa-solid fa-trophy"></i> All Achievements</h2>
+        <button onclick="closeAchievements()" title="Close">&times;</button>
+      </div>
+      <div class="achievements-list">
+        <?php foreach($all_achievements as $ach): ?>
+          <div class="achievement-card">
+            <div class="achievement-icon-large">
+              <i class="<?= htmlspecialchars($ach['icon']) ?>"></i>
+            </div>
+            <div class="achievement-info">
+              <h3><?= htmlspecialchars($ach['title']) ?></h3>
+              <p><?= htmlspecialchars($ach['description']) ?></p>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    </div>
+
+
 
   <script>
      document.querySelectorAll('.achievement-item').forEach(item => {
