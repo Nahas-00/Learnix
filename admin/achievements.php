@@ -39,7 +39,8 @@ if (isset($_SESSION['toast'])) {
       "fa-solid fa-hand-peace", "fa-solid fa-person-running", "fa-solid fa-user-tie", "fa-solid fa-rocket-launch",
       "fa-solid fa-star-sharp", "fa-solid fa-award-simple", "fa-solid fa-people-group", "fa-solid fa-circle-half-stroke",
       "fa-solid fa-hands-holding", "fa-solid fa-hourglass-half", "fa-solid fa-palette", "fa-solid fa-masks-theater",
-      "fa-solid fa-gamepad", "fa-solid fa-hand-holding-heart", "fa-solid fa-certificate", "fa-solid fa-bolt-slash"
+      "fa-solid fa-gamepad", "fa-solid fa-hand-holding-heart", "fa-solid fa-certificate", "fa-solid fa-bolt-slash","fa-solid fa-crosshairs"
+      ,"fa-solid fa-cookie-bite","fa-solid fa-hand-fist","fa-solid fa-soap"
       ];
 ?>
 

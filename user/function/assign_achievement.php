@@ -94,8 +94,6 @@
 
   if ($dsa_result && $dsa_result['total_dsa'] == $dsa_result['solved_dsa']) {
     
-  } else {
-    
   }
 
 

@@ -53,6 +53,11 @@ require_once '../auth/auth_validate.php';
             <i class="fa-solid fa-trophy nav-icon"></i>
             Achievements
           </a>
+
+          <a href="?page=leaderboard" class="nav-item">
+            <i class="fa-solid fa-trophy"></i>
+            LeaderBoard
+          </a>
         
       </div>
   </div>
@@ -64,7 +69,7 @@ require_once '../auth/auth_validate.php';
       if(isset($_GET['page'])){
         $page = $_GET['page'];
 
-        $allowed = ['home', 'question_manage','user_manage','view_submission','topics','achievements','add-achievement'];
+        $allowed = ['home', 'question_manage','user_manage','view_submission','topics','achievements','add-achievement','leaderboard'];
 
         if(in_array($page,$allowed)&&file_exists($page.".php")){
           if($page === 'add-achievement' ){include 'functions/add-achievement.php';}else{
