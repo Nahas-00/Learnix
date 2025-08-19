@@ -1,0 +1,99 @@
+/* Container for edit page */
+.edit-container {
+  max-width: 600px;
+  width: 520px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #374151;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  animation: fadeIn 0.3s ease-in-out;
+
+}
+
+/* Page title */
+.edit-container h1 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: var(--primary, #7c3aed);
+  font-weight: 600;
+}
+
+/* Form styling */
+.edit-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Inputs */
+.edit-container input[type="text"],
+.edit-container select {
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border 0.2s;
+}
+
+.edit-container input[type="text"]:focus,
+.edit-container select:focus {
+  outline: none;
+  border-color: var(--primary, #7c3aed);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.2);
+}
+
+/* Label for select */
+.edit-container label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #fff; /* gray-700 */
+}
+
+/* Button */
+.edit-container button[type="submit"] {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary, #7c3aed);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+
+.edit-container button[type="submit"]:hover {
+  background: var(--primary-dark, #6d28d9);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(124,58,237,0.3);
+}
+
+/* Icon preview styling */
+.edit-container .icon-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.edit-container .icon-select i {
+  font-size: 1.5rem;
+  color: var(--primary, #7c3aed);
+}
+
+.back-btn{
+  color: aliceblue;
+  text-decoration: none;
+}
+
+.back-btn:hover{
+  text-decoration: underline;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

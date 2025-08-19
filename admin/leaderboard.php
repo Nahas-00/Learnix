@@ -71,7 +71,7 @@
       <?php
         $streakStmt->execute(['uid' => $row['id']]);
         $streak = $streakStmt->fetchColumn();
-        $isCurrentUser = ($row['id'] == $uid);
+        $isCurrentUser =0;
       ?>
 
       <?php if ($index === 0): ?>
@@ -133,7 +133,7 @@
       <?php
         $streakStmt->execute(['uid' => $row['id']]);
         $streak = $streakStmt->fetchColumn();
-        $isCurrentUser = ($row['id'] == $uid);
+        $isCurrentUser = 0;
       ?>
 
       <?php if ($index === 0): ?>

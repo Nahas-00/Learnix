@@ -56,6 +56,7 @@
   align-items: center;
   justify-content: center;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  flex-shrink: 0;
 }
 
 .icon-achieve i{
@@ -283,4 +284,58 @@
   background-color: #1e293b;
   color: #fff;
   border: 1px solid #7c3aed;
+}
+
+
+.achieve-actions {
+  display: flex;
+  gap: 5px;
+  margin-top: 12px;
+  justify-content: flex-end;
+  flex-direction: column;
+  margin-left: 8px;
+}
+
+/* Base button style */
+.achieve-actions button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Edit button */
+.edit-btn {
+  background-color: var(--primary-light, #8b5cf6);
+  color: #fff;
+}
+
+.edit-btn:hover {
+  background-color: var(--primary-dark, #6d28d9);
+  transform: translateY(-2px);
+}
+
+/* Delete button */
+.delete-btn {
+  background-color: #ef4444; /* red-500 */
+  color: #fff;
+}
+
+.delete-btn:hover {
+  background-color: #dc2626; /* red-600 */
+  transform: translateY(-2px);
+}
+
+/* Add slight shadow */
+.achieve-actions button {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.achieve-actions button i {
+  font-size: 0.9rem;
 }

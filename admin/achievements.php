@@ -1,6 +1,5 @@
 <?php
 include '../utils/connect.php';
-// Removed the include for add-achievement.php since we're putting the form directly here
 
 $stmt = $pdo->query("SELECT * FROM achievement");
 $achieve = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -85,6 +84,17 @@ if (isset($_SESSION['toast'])) {
             <div class="text-block">
                 <h1 class="title"><?= htmlspecialchars($item['title']) ?></h1>
                 <p class="description"><?= htmlspecialchars($item['description']) ?></p>
+            </div>
+
+             <div class="achieve-actions">
+                <form action="functions/edit-achievements.php" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="<?= $item['id'] ?>">
+                    <button type="submit" class="edit-btn"><i class="fa-solid fa-pen"></i> Edit</button>
+                </form>
+                <form action="functions/delete-achievement.php" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this achievement?');">
+                    <input type="hidden" name="id" value="<?= $item['id'] ?>">
+                    <button type="submit" class="delete-btn"><i class="fa-solid fa-trash"></i> Delete</button>
+                </form>
             </div>
         </div>
         <?php endforeach; ?>
