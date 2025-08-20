@@ -62,10 +62,9 @@
   <title>Edit Achievement</title>
   <link rel="stylesheet" href="../../styles/admin_dash.css">
   <link rel="stylesheet" href="../../styles/edit-achieve.css">
+     <link rel="icon" href="../../assets/images/web_icon.png" type="image/png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
   <div class="edit-container">
@@ -81,7 +80,7 @@
 
         <label for="icon">Icon</label>
         <div class="icon-select">
-          <select id="icon" name="icon">
+          <select id="icon-img" name="icon">
             <?php foreach($icons as $icon_item): ?>
               <option value="<?= htmlspecialchars($icon_item) ?>" <?= $item['icon']===$icon_item?'selected':'' ?>>
                 <?= htmlspecialchars($icon_item) ?>
@@ -104,20 +103,26 @@
 
 
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-  <script>
-    $(document).ready(function() {
-      $('#icon-select').select2({
-        placeholder: "Search icons...",
-        allowClear: true
-      });
+<script>
+  $(document).ready(function () {
+    // Initialize Select2
+    $('#icon-img').select2();
+
+    // Update icon preview on change
+    $('#icon-img').on('change', function () {
+      const selectedIcon = $(this).val(); // Get selected value
+      $('#icon-preview').attr('class', selectedIcon); // Update <i> tag class
     });
-    </script>
+  });
+</script>
 
 
   <script>
     // Update icon preview on select change
-    document.getElementById('icon').addEventListener('change', function() {
+    document.getElementById('icon-img').addEventListener('change', function() {
       document.getElementById('icon-preview').className = this.value;
     });
   </script>

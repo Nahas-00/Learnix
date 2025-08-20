@@ -12,7 +12,7 @@
   $first_shot = $stmt->fetch(PDO::FETCH_ASSOC);
 
   if($first_shot){
-
+     addAchievement($pdo, $uid, "First Shot");
   }
 
   //category explorer
@@ -33,9 +33,7 @@
   if($result){
   if ($result['dsa_easy'] > 0 && $result['dsa_medium'] > 0 
       && $result['nondsa_easy'] > 0 && $result['nondsa_medium'] > 0) {
-    
-  } else {
-
+     addAchievement($pdo, $uid, "Category Explorer");
   }
 }
 
@@ -67,13 +65,13 @@
   }
 
   if($streak>=5){
-
+     addAchievement($pdo, $uid, "5 Days Streak");
   }
 
 //Daily streak(30 days) - 30 Day warrior
 
   if($streak>=30){
-
+    addAchievement($pdo, $uid, "30 Days Warrior");
   }
 
 //Dsa Finisher
@@ -93,7 +91,7 @@
   $dsa_result = $dsa_stmt->fetch(PDO::FETCH_ASSOC);
 
   if ($dsa_result && $dsa_result['total_dsa'] == $dsa_result['solved_dsa']) {
-    
+    addAchievement($pdo, $uid, "Dsa Finisher");
   }
 
 
@@ -114,10 +112,8 @@
   $ndsa_result = $ndsa_stmt->fetch(PDO::FETCH_ASSOC);
 
   if ($ndsa_result && $ndsa_result['total_dsa'] == $ndsa_result['solved_dsa']) {
-   
-  } else {
-      
-  }
+   addAchievement($pdo, $uid, "Non-Dsa Finisher");
+  } 
 
 
 //Master
@@ -137,7 +133,7 @@
  $ques = $mas_stmt->fetchAll(PDO::FETCH_ASSOC);
 
   if(!$ques){
-
+    addAchievement($pdo, $uid, "Master");
   }
 
 //Clean Sheet
@@ -159,11 +155,8 @@ $clean_stmt->execute(['uid' => $uid]);
 $clean_solved = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
 if (!empty($clean_solved)) {
- 
-    print_r($clean_solved);
-} else {
-
-}
+  addAchievement($pdo, $uid, "Clean Sheet");
+} 
 
 
 
@@ -186,7 +179,7 @@ if (!empty($clean_solved)) {
   $rok_result = $rok_stmt->fetch(PDO::FETCH_ASSOC);
 
   if ($rok_result && $rok_result['total_easy_dsa'] == $rok_result['solved_easy_dsa']) {
- 
+    addAchievement($pdo, $uid, "Rookie");
   }
 
 
@@ -208,8 +201,29 @@ if (!empty($clean_solved)) {
   $fig_result = $fig_stmt->fetch(PDO::FETCH_ASSOC);
 
   if ($fig_result && $fig_result['total_medium_dsa'] == $fig_result['solved_easy_dsa']) {
- 
+    addAchievement($pdo, $uid, "Fighter");
   }
+
+  //add achievement function
+  function addAchievement($pdo, $uid, $achievement_name) {
+
+    $ach_stmt = $pdo->prepare("SELECT id FROM achievement WHERE title = ?");
+    $ach_stmt->execute([$achievement_name]);
+    $ach = $ach_stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($ach) {
+        $achievement_id = $ach['id'];
+
+        $check_stmt = $pdo->prepare("SELECT 1 FROM user_achievement WHERE user_id = ? AND achievement_id = ?");
+        $check_stmt->execute([$uid, $achievement_id]);
+        $exists = $check_stmt->fetch();
+
+        if (!$exists) {
+            $insert_stmt = $pdo->prepare("INSERT INTO user_achievement (user_id, achievement_id, date_earned) VALUES (?, ?, NOW())");
+            $insert_stmt->execute([$uid, $achievement_id]);
+        }
+    }
+}
 
 
 ?>

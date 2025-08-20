@@ -1,14 +1,14 @@
 let notifications = document.querySelector('.notification');
 
 export function toastMsg(title='Success',msg='This is success message'){
-  let type= title.toLocaleLowerCase();
+  let type= title.toLowerCase();
   let icon;
   switch(type){
     case 'success':icon='fa-solid fa-circle-check';
       break;
      case 'warning':icon='fa-solid fa-triangle-exclamation';
       break;
-     case 'error':icon='fa-solid fa-circle-exclamation';
+     case 'Error':icon='fa-solid fa-circle-exclamation';
       break;
   }
   
