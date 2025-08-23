@@ -166,6 +166,7 @@ if (isset($_SESSION['toast'])) {
         function toggleAchievementForm() {
             const formContainer = document.getElementById('achievement-form-container');
             formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
+              
         }
 
         // Update icon preview when selection changes
