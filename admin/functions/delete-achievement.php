@@ -2,6 +2,11 @@
 include '../../utils/connect.php';
 session_start();
 
+if($_SESSION['logid'] !== 1){
+    header('Location: ../../login/login.php');
+    exit;
+  }
+
 if (isset($_POST['id'])) {
     $id = intval($_POST['id']);
     $stmt = $pdo->prepare("DELETE FROM achievement WHERE id = ?");

@@ -2,6 +2,11 @@
   include '../../utils//connect.php';
   session_start();
 
+  if($_SESSION['logid'] !== 1){
+    header('Location: ../../login/login.php');
+    exit;
+  }
+
   if(isset($_POST['add'])){
     $title = $_POST['title'];
     $description = $_POST['description'];

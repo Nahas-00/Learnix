@@ -1,5 +1,13 @@
 <?php
   include_once '../../utils/connect.php';
+
+  session_start();
+
+  if($_SESSION['logid'] !== 1){
+    header('Location: ../../login/login.php');
+    exit;
+  }
+
   $id=$_POST['id'];
   $stmt = $pdo->prepare("SELECT * FROM achievement WHERE id = :id");
   $stmt->execute(['id'=>$id]);

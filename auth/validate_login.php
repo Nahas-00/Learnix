@@ -8,6 +8,7 @@
     $email = $_POST['email'] ?? '';
     $pass = $_POST['pass'] ?? '';
     $role = 'user';
+    $_SESSION['logid'] = 0;
 
     if($email == '' || !$pass){
       $msg = "Enter both email and password";
@@ -24,9 +25,11 @@
       $_SESSION['username'] = $user['username'];
       $msg = "Login Successfull";
       $title= 'Success';
+      $_SESSION['logid'] = 2;
 
       if($email == "admin@learnix.com"){
         $role = 'admin';
+        $_SESSION['logid'] = 1;
       }
       
 

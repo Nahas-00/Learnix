@@ -2,6 +2,11 @@
 
 include 'functions/add-user.php';
 
+if($_SESSION['logid'] !== 1){
+    header('Location: ../../login/login.php');
+    exit;
+  }
+
 $showAddUser = false;
 $msg = null;
 $title = null;

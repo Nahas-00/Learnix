@@ -1,5 +1,11 @@
 <?php
     include_once '../utils/connect.php';
+
+  if($_SESSION['logid'] !== 2){
+    header('Location: ../../login/login.php');
+    exit;
+  }
+
     $id = $_SESSION['userid'];
     $user_stmt = $pdo->prepare('SELECT *FROM users WHERE id = ?');
     $user_stmt->execute([$id]);

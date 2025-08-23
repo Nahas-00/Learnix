@@ -3,6 +3,11 @@
 require_once '../auth/auth_validate.php';
 include_once '../utils/connect.php';
 
+  if($_SESSION['logid'] !== 2){
+    header('Location: ../../login/login.php');
+    exit;
+  }
+
   $uid = $_SESSION['userid'];
 
   $stmt = $pdo->prepare("SELECT q.*

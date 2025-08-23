@@ -2,6 +2,11 @@
 
 include_once '../utils/connect.php';
 
+if($_SESSION['logid'] !== 1){
+    header('Location: ../../login/login.php');
+    exit;
+  }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
   $username = $_POST['username'];
   $email = $_POST['email'];

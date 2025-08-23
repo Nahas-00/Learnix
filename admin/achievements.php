@@ -1,6 +1,11 @@
 <?php
 include '../utils/connect.php';
 
+if($_SESSION['logid'] !== 1){
+    header('Location: ../login/login.php');
+    exit;
+  }
+
 $stmt = $pdo->query("SELECT * FROM achievement");
 $achieve = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

@@ -1,6 +1,11 @@
 <?php
   include_once '../utils/connect.php';
 
+  if($_SESSION['logid'] !== 1){
+    header('Location: ../../login/login.php');
+    exit;
+  }
+
       $week_stmt = $pdo->prepare("
         SELECT u.id,u.username,u.profile_pic, COUNT(DISTINCT s.qid) AS solved_count
         FROM submission s

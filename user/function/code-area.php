@@ -1,6 +1,13 @@
 <?php
   include_once '../../utils/connect.php';
 
+  session_start();
+
+  if($_SESSION['logid'] !== 2){
+    header('Location: ../../login/login.php');
+    exit;
+  }
+
   $qid = $_GET['id'] ?? null;
 
   if ($qid) {

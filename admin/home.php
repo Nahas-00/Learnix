@@ -2,6 +2,11 @@
 
     include_once '../utils/connect.php';
 
+    if($_SESSION['logid'] !== 1){
+    header('Location: ../../login/login.php');
+    exit;
+  }
+
     $stmt = $pdo->query("SELECT COUNT(*) AS total_rows FROM question");
     $ques = $stmt->fetch(PDO::FETCH_ASSOC);
 

@@ -2,6 +2,11 @@
     require_once '../../utils/connect.php';
     session_start();
 
+    if($_SESSION['logid'] !== 1){
+    header('Location: ../../login/login.php');
+    exit;
+  }
+
     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])){
       $id = $_POST['user_id']; 
 

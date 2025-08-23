@@ -2,6 +2,11 @@
 <?php
 require_once '../auth/auth_validate.php';
 
+if($_SESSION['logid'] !== 1){
+    header('Location: ../../login/login.php');
+    exit;
+  }
+
 
 ?>
 

@@ -1,7 +1,10 @@
 <?php
   include '../utils/connect.php';
 
-
+  if($_SESSION['logid'] !== 1){
+    header('Location: ../../login/login.php');
+    exit;
+  }
   
  $search = $_GET['q']??'';
 

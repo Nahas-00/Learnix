@@ -2,6 +2,11 @@
   session_start();
   require_once '../../utils/connect.php';
 
+  if($_SESSION['logid'] !== 1){
+    header('Location: ../../login/login.php');
+    exit;
+  }
+
     if(!isset($_GET['id'])){
       header("location: ../dashboard.php?page=user_manage");
       exit;

@@ -2,6 +2,11 @@
   include_once '../utils/connect.php';
   $id = $_SESSION['userid'];
 
+  if($_SESSION['logid'] !== 2){
+    header('Location: ../../login/login.php');
+    exit;
+  }
+
   $stmt = $pdo->prepare('SELECT *FROM users where id = ?');
   $stmt->execute([$id]);
   $user = $stmt->fetch(PDO::FETCH_ASSOC);

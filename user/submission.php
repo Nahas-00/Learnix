@@ -1,6 +1,10 @@
 <?php
   include '../utils/connect.php';
 
+  if($_SESSION['logid'] !== 2){
+    header('Location: ../../login/login.php');
+    exit;
+  }
 
   
  $id = $_SESSION['userid'];
