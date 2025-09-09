@@ -17,14 +17,12 @@
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body{
-  overflow:scroll;
-}
 
 .topic-grid{
   display: grid;
   grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
   gap: 1.5rem;
+  margin-top: 10px;
 }
 
 .topic-card{
