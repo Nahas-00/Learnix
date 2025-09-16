@@ -77,7 +77,7 @@ if (isset($_SESSION['toast'])) {
         </div>
     </div>
 
-    <button onclick="toggleAchievementForm()" class="achieve-btn">Add +</button>
+   <a href="#achievement-form-container" style="text-decoration: none;"> <button onclick="toggleAchievementForm()" class="achieve-btn">Add +</button> </a>
 
     <!--Achievements display-->
     <div class="display-grid-card">

@@ -10,6 +10,20 @@
   $msg = null;
   $title = null;
 
+  if (isset($_POST['delete'])) {
+    $delete_id = intval($_POST['delete_id']);
+
+    $stmt = $pdo->prepare("DELETE FROM topic WHERE id = ?");
+    if ($stmt->execute([$delete_id])) {
+        $msg = "Topic deleted successfully.";
+        $title = "Success";
+    } else {
+        $msg = "Error deleting topic.";
+        $title = "Error";
+    }
+}
+
+
   if(isset($_POST['submit'])){
     $name = strtolower(trim($_POST['name']));
 
@@ -95,17 +109,22 @@ $search = $_GET['q'] ?? '';
 <!--Topic display-->
 
 <div class="topic-grid">
-
    <?php foreach($topic as $topic): ?>
+ <div class="topic-card">
+  <span class="topic-id"> <?= htmlspecialchars($topic['id']) ?> </span>
+  <h3 class="topic-name"> <?= ucwords(htmlspecialchars($topic['name'])) ?></h3>
 
-  <div class="topic-card">
-    <span class="topic-id"> <?= htmlspecialchars($topic['id']) ?> </span>
-    <h3 class="topic-name"> <?= ucwords(htmlspecialchars($topic['name'])) ?></h3>
-  </div>
-
-    <?php endforeach; ?>
-  
+  <form action="" method="post" onsubmit="return confirm('Delete this topic?');">
+    <input type="hidden" name="delete_id" value="<?= $topic['id'] ?>">
+    <button type="submit" name="delete" class="delete-btn">
+      <i class="fa fa-trash"></i> Delete
+    </button>
+  </form>
 </div>
+
+   <?php endforeach; ?>
+</div>
+
 
 <div class="topic-div-line"></div>
 

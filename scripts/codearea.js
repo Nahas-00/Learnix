@@ -471,3 +471,33 @@ function showSubmissionNotice(message = "✅ Submission Successful!", timeout = 
 }
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    const backBtn = document.getElementById("backBtn");
+    const editor = document.getElementById("codeEditor"); // your textarea/div for code
+
+    backBtn.addEventListener("click", function (e) {
+        e.preventDefault(); // stop immediate navigation
+
+        const code = editor.value; // or editor.getValue() if using CodeMirror/Monaco
+        const userId = "<?php echo $_SESSION['user_id']; ?>";
+        const questionId = "<?php echo $question_id; ?>";
+
+        // Send last tried code via AJAX
+        fetch("save_last_try.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `user_id=${userId}&question_id=${questionId}&code=${encodeURIComponent(code)}&language=${languageName}`
+        }).then(res => res.text()).then(response => {
+            console.log("Saved:", response);
+            // Now actually go back
+            window.history.back();
+        }).catch(err => {
+            console.error("Save failed:", err);
+            window.history.back(); // still allow navigation
+        });
+    });
+});
+
+
+
+
