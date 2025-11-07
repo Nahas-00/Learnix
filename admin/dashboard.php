@@ -60,8 +60,18 @@ if($_SESSION['logid'] !== 1){
           </a>
 
           <a href="?page=leaderboard" class="nav-item">
-            <i class="fa-solid fa-trophy"></i>
+            <i class="fa-solid fa-chart-simple"></i>
             LeaderBoard
+          </a>
+
+          <a href="functions/report.php" class="nav-item">
+            <i class="fa-solid fa-file"></i>
+            Reports
+          </a>
+
+          <a href="functions/question_report.php" class="nav-item">
+            <i class="fa-solid fa-file"></i>
+            Question Reports
           </a>
         
       </div>
@@ -74,10 +84,13 @@ if($_SESSION['logid'] !== 1){
       if(isset($_GET['page'])){
         $page = $_GET['page'];
 
-        $allowed = ['home', 'question_manage','user_manage','view_submission','topics','achievements','add-achievement','leaderboard'];
+        $allowed = ['home', 'question_manage','user_manage','view_submission','topics','achievements','add-achievement','leaderboard', 'report'];
 
         if(in_array($page,$allowed)&&file_exists($page.".php")){
-          if($page === 'add-achievement' ){include 'functions/add-achievement.php';}else{
+          if($page === 'add-achievement' ){include 'functions/add-achievement.php';}
+          else if($page == 'report'){
+            
+          }else{
         include $page.".php";}
         }else{
           echo "<div class=not-found>Error 404 ! <br> Page not found</div>";
